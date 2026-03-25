@@ -21,7 +21,7 @@ public class PeliculaAdminController {
     public PeliculaAdminController(DataSource ds) {
     	this.ds = ds;
     }
-    
+    /*
     @GetMapping
     public List<Pelicula> index() throws SQLException {
     	System.out.println("HOLA");
@@ -88,4 +88,5 @@ public class PeliculaAdminController {
     		req.directorId()
     	);
     }
+    */
 }

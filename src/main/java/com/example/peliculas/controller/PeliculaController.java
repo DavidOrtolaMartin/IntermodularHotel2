@@ -31,6 +31,7 @@ public class PeliculaController {
 	public PeliculaController(DataSource ds) {
 		this.ds = ds;
 	}
+	/*
 
 	@GetMapping
 	public List<PeliculaResumen> index() {
@@ -84,4 +85,5 @@ public class PeliculaController {
 			throw new DataAccessException(e);
 		}
 	}
+	*/
 }

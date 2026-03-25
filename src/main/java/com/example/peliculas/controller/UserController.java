@@ -16,7 +16,7 @@ import com.example.peliculas.repository.PeliculaRepository;
 
 
 @RestController
-@RequestMapping("/api/peliculas")
+@RequestMapping("/api/users")
 public class UserController {
 	private final DataSource ds;
     public UserController(DataSource ds) {
