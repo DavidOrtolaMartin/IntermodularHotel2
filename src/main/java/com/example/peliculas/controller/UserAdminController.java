@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.peliculas.dto.UserResponse;
+import com.example.peliculas.dto.UserAdmin;
+import com.example.peliculas.dto.UserEditAdmin;
 import com.example.peliculas.entity.User;
 import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.repository.UserRepository;
@@ -30,24 +31,25 @@ public class UserAdminController {
     }
     
     @GetMapping
-    public List<UserResponse> index() throws SQLException {
+    public List<UserAdmin> index() throws SQLException {
     	try (Connection con = ds.getConnection()) {
     	    UserRepository repo = new UserRepository(con);
-    	    return repo.findAllResponses(); // findResponses
+    	    return repo.findAllUsersAdmins(); 
     	 } catch (SQLException e) {
     	        throw new DataAccessException(e);
     	 }
     }
     
     @GetMapping("/{id}")
-    public User show(@PathVariable int id) {
+    public UserEditAdmin showAdmin(@PathVariable int id) {
         try (Connection con = ds.getConnection()) {
-        	UserRepository repo = new UserRepository(con);
-            return repo.find(id);
+            UserRepository repo = new UserRepository(con);
+            return repo.findUserEditAdmin(id);
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
     }
+  
 
     @PostMapping
     public User store(@RequestBody User usuario) {
@@ -60,16 +62,16 @@ public class UserAdminController {
         }
     }
 
+   
+    
     @PutMapping("/{id}")
-    public User update(@PathVariable int id, @RequestBody User usuario) {
-    	System.out.println(usuario);
+    public User updateAdmin(@PathVariable int id, @RequestBody UserEditAdmin u) {
         try (Connection con = ds.getConnection()) {
-        	UserRepository repo = new UserRepository(con);
-            usuario.setId(id);
-            repo.update(usuario);
-            return usuario;
+            UserRepository repo = new UserRepository(con);
+            repo.updateAdmin(id, u); // Actualiza usando provinciaId de UserEditAdmin
+            return repo.find(id);     // Devuelve usuario actualizado
         } catch (SQLException e) {
-            throw new DataAccessException(e);
+            throw new DataAccessException("Error actualizando usuario", e);
         }
     }
 

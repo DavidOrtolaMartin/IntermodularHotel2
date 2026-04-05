@@ -9,8 +9,9 @@ import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.mapper.RowMapper;
 import com.example.peliculas.mapper.UserMapper;
 import com.example.peliculas.mapper.UserResponseMapper;
-
+import com.example.peliculas.dto.UserAdmin;
 import com.example.peliculas.dto.UserResponse;
+import com.example.peliculas.dto.UserEditAdmin;
 import com.example.peliculas.db.DB;
 
 public class UserRepository extends BaseRepository<User> {
@@ -71,6 +72,100 @@ public class UserRepository extends BaseRepository<User> {
 		} catch (SQLException e) {
 			throw new DataAccessException("Error obteniendo los usuarios", e);
 		}
+	}
+	
+	public List<UserAdmin> findAllUsersAdmins() {
+	    try {
+	        String sql = """
+	            SELECT 
+	                u.id,
+	                p.nombre AS provincia,
+	                u.name,
+	                u.apellido1,
+	                u.apellido2,
+	                u.email,
+	                u.tlf1,
+	                u.tlf2,
+	                u.role
+	            FROM users u
+	            JOIN provincia p ON u.id_provincia = p.id_provincia
+	        """;
+
+	        return DB.queryMany(con, sql, rs -> new UserAdmin(   //esto se construye en orden al constructor del dto useradmin
+	            rs.getInt("id"),
+	            rs.getString("provincia"),
+	            rs.getString("name"),
+	            rs.getString("apellido1"),
+	            rs.getString("apellido2"),
+	            rs.getString("email"),
+	            rs.getString("tlf1"),
+	            rs.getString("tlf2"),
+	            rs.getString("role")
+	        ));
+
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error obteniendo los usuarios admin", e);
+	    }
+	}
+	
+
+	public UserEditAdmin findUserEditAdmin(int id) {
+	    try {
+	        String sql = """
+	            SELECT 
+	                u.name,
+	                u.apellido1,
+	                u.apellido2,
+	                u.email,
+	                u.tlf1,
+	                u.tlf2,
+	                u.role,
+	                u.id_provincia
+	            FROM users u
+	            WHERE u.id = ?
+	        """;
+
+	        return DB.queryOne(con, sql, rs -> new UserEditAdmin(
+	            rs.getString("name"),
+	            rs.getString("apellido1"),
+	            rs.getString("apellido2"),
+	            rs.getString("email"),
+	            rs.getString("tlf1"),
+	            rs.getString("tlf2"),
+	            rs.getString("role"),
+	            rs.getInt("id_provincia")
+	        ), id);
+
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error obteniendo usuario admin para editar", e);
+	    }
+	}
+	
+	public int updateAdmin(int id, UserEditAdmin u) throws SQLException {
+	    String sql = """
+	        UPDATE users SET
+	            id_provincia = ?,
+	            name = ?,
+	            apellido1 = ?,
+	            apellido2 = ?,
+	            email = ?,
+	            tlf1 = ?,
+	            tlf2 = ?,
+	            role = ?
+	        WHERE id = ?
+	    """;
+
+	    return DB.update(con, sql,
+	        u.provinciaId(), // 👈 ya no null
+	        u.name(),
+	        u.apellido1(),
+	        u.apellido2(),
+	        u.email(),
+	        u.tlf1(),
+	        u.tlf2(),
+	        u.role(),
+	        id
+	    );
 	}
 	
 	public User findByEmail(String email) {
