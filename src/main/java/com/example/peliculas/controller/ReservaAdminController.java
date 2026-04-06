@@ -14,76 +14,78 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.peliculas.dto.UserAdmin;
-import com.example.peliculas.dto.UserEditAdmin;
-import com.example.peliculas.entity.User;
+import com.example.peliculas.entity.Reserva;
 import com.example.peliculas.exception.DataAccessException;
-import com.example.peliculas.repository.UserRepository;
+import com.example.peliculas.repository.ReservaRepository;
+
 
 @RestController
-@RequestMapping("/api/admin/users")
-public class UserAdminController {
+@RequestMapping("/api/admin/reservas")
+public class ReservaAdminController {
 	private final DataSource ds;
-
-    public UserAdminController(DataSource ds) {
-    	this.ds = ds;
-    }
-    
-    @GetMapping
-    public List<UserAdmin> index() throws SQLException {
+	
+	public ReservaAdminController(DataSource ds) {
+		this.ds = ds;
+	}
+	
+	@GetMapping
+    public List<Reserva> index() throws SQLException {
     	try (Connection con = ds.getConnection()) {
-    	    UserRepository repo = new UserRepository(con);
-    	    return repo.findAllUsersAdmins(); 
+    	    ReservaRepository repo = new ReservaRepository(con);
+    	    return repo.findAll();
     	 } catch (SQLException e) {
     	        throw new DataAccessException(e);
     	 }
     }
-    
-    @GetMapping("/{id}")
-    public UserEditAdmin showAdmin(@PathVariable int id) {
+	
+	@GetMapping("/{id}")
+    public Reserva show(@PathVariable int id) {
         try (Connection con = ds.getConnection()) {
-            UserRepository repo = new UserRepository(con);
-            return repo.findUserEditAdmin(id);
+        	ReservaRepository repo = new ReservaRepository(con);
+            return repo.find(id);
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
     }
-  
-
-    @PostMapping
-    public User store(@RequestBody User usuario) {
+	
+	
+	@PostMapping
+    public Reserva store(@RequestBody Reserva reserva) {
         try (Connection con = ds.getConnection()) {
-        	UserRepository repo = new UserRepository(con);
-            repo.insert(usuario);
-            return usuario;
+        	ReservaRepository repo = new ReservaRepository(con);
+            repo.insert(reserva);
+            return reserva;
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
     }
+	
 
-   
-    
-    @PutMapping("/{id}")
-    public User updateAdmin(@PathVariable int id, @RequestBody UserEditAdmin u) {
+	@PutMapping("/{id}")
+    public Reserva update(@PathVariable int id, @RequestBody Reserva reserva) {
+    	System.out.println(reserva);
         try (Connection con = ds.getConnection()) {
-            UserRepository repo = new UserRepository(con);
-            repo.updateAdmin(id, u); // Actualiza usando provinciaId de UserEditAdmin
-            return repo.find(id);     // Devuelve usuario actualizado
+        	ReservaRepository repo = new ReservaRepository(con);
+            reserva.setId(id);
+            repo.update(reserva);
+            return reserva;
         } catch (SQLException e) {
-            throw new DataAccessException("Error actualizando usuario", e);
+            throw new DataAccessException(e);
         }
     }
-
-    @DeleteMapping("/{id}")
+	
+	
+	@DeleteMapping("/{id}")
     public void destroy(@PathVariable int id) {
         try (Connection con = ds.getConnection()) {
-        	UserRepository repo = new UserRepository(con);
+        	ReservaRepository repo = new ReservaRepository(con);
             repo.delete(id);
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
     }
+	
+	
+	
+
 }
-
-

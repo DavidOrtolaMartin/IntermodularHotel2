@@ -10,8 +10,5 @@ public class PeliculasApplication {
 		SpringApplication.run(PeliculasApplication.class, args);
 	}
 	
-	// AQUI MODIFICA COSAS EL DESARROLLADOR2(Pedro) registro
-	// funcionalidad de registro
-	// funcionalidad de registro
-
+	
 }
