@@ -5,23 +5,27 @@ const id = params.get("id");
 
 console.log("ID del usuario:", id);
 
-// Cargar provincias en el selector
+// 🔹 Cargar provincias
 async function loadProvincias() {
     try {
-        const provincias = await api.get("/api/admin/provincias"); // Endpoint que devuelve [{id:1, nombre:"Madrid"}, ...]
+        const provincias = await api.get("/api/admin/users/provincias");
+
         const select = document.getElementById("provinciaId");
+
         provincias.forEach(p => {
             const option = document.createElement("option");
-            option.value = p.id;
-            option.textContent = p.nombre;
+            option.value = String(p.id);        // 👈 lo que se guarda
+            option.textContent = p.nombre; // 👈 lo que se muestra
+			// ESTO TENGO QUE PONERLO ABAJO CON EL VALUE, HAGO UN BUCLE COMPARANDO EL ID CON EL NOMBRE Y SI COINCIDE HAGO SELECTED
             select.appendChild(option);
         });
+
     } catch (err) {
         console.error("Error cargando provincias:", err);
     }
 }
 
-// Cargar datos del usuario
+// 🔹 Cargar usuario
 async function loadUser() {
     try {
         const user = await api.get(`/api/admin/users/${id}`);
@@ -32,6 +36,7 @@ async function loadUser() {
     }
 }
 
+// 🔹 Rellenar formulario
 function fillForm(u) {
     document.getElementById("name").value = u.name || "";
     document.getElementById("apellido1").value = u.apellido1 || "";
@@ -40,14 +45,19 @@ function fillForm(u) {
     document.getElementById("tlf1").value = u.tlf1 || "";
     document.getElementById("tlf2").value = u.tlf2 || "";
     document.getElementById("role").value = u.role || "";
-    document.getElementById("provinciaId").value = u.provinciaId || 1; // 👈 match con DTO
+
+    // 👇 ESTO ES LA CLAVE
+    document.getElementById("provinciaId").value = String(u.provinciaId);
 }
 
-// Submit
+// 🔹 Submit
 document.getElementById("form-user").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const provinciaValue = document.getElementById("provinciaId").value;
+	
+	console.log("PUT payload provinciaValue:", provinciaValue);
+
 
     const user = {
         name: document.getElementById("name").value,
@@ -57,10 +67,10 @@ document.getElementById("form-user").addEventListener("submit", async (e) => {
         tlf1: document.getElementById("tlf1").value,
         tlf2: document.getElementById("tlf2").value,
         role: document.getElementById("role").value,
-        provinciaId: provinciaValue ? parseInt(provinciaValue) : 1 // 👈 número seguro
+        provincia_id: parseInt(provinciaValue) // HAY QUE PONERLO COMO ESTA EN LA BASE DE DATOS, que quiere transformarlo el 
     };
 
-    console.log("PUT payload:", user);
+    console.log("PUT payload JLD1:", user);
 
     try {
         await api.put(`/api/admin/users/${id}`, user);
@@ -72,8 +82,8 @@ document.getElementById("form-user").addEventListener("submit", async (e) => {
     }
 });
 
-// Inicialización
+// 🔹 Init
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadProvincias();
-    await loadUser();
+    await loadProvincias(); // primero provincias
+    await loadUser();       // luego usuario
 });

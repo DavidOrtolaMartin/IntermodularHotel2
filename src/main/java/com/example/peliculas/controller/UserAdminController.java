@@ -2,7 +2,9 @@ package com.example.peliculas.controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.peliculas.db.DB;
 import com.example.peliculas.dto.UserAdmin;
 import com.example.peliculas.dto.UserEditAdmin;
 import com.example.peliculas.entity.User;
@@ -42,9 +45,14 @@ public class UserAdminController {
     
     @GetMapping("/{id}")
     public UserEditAdmin showAdmin(@PathVariable int id) {
+    	System.out.println("JLD2:Dentro UserEditAdmin");
         try (Connection con = ds.getConnection()) {
+        	System.out.println("JLD3:Dentro UserEditAdmin try");
             UserRepository repo = new UserRepository(con);
+            System.out.println("JLD3:Dentro UserEditAdmin aantes Find");
             return repo.findUserEditAdmin(id);
+            
+
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
@@ -66,9 +74,14 @@ public class UserAdminController {
     
     @PutMapping("/{id}")
     public User updateAdmin(@PathVariable int id, @RequestBody UserEditAdmin u) {
+    	System.out.println("---------------------------------------------------------------------------");
+    	System.out.println("JLD3:Dentro Userupdte antedtry Find");
         try (Connection con = ds.getConnection()) {
+        	System.out.println("JLD3:Dentro UserEditAdmin despuestry Find");
             UserRepository repo = new UserRepository(con);
+            System.out.println("JLD3:Dentro UserEditAdmin antesupdatedadmin u:" + u);
             repo.updateAdmin(id, u); // Actualiza usando provinciaId de UserEditAdmin
+            System.out.println("JLD3:Dentro UserEditAdmin despuesupdateadmin Find");
             return repo.find(id);     // Devuelve usuario actualizado
         } catch (SQLException e) {
             throw new DataAccessException("Error actualizando usuario", e);
@@ -84,6 +97,27 @@ public class UserAdminController {
             throw new DataAccessException(e);
         }
     }
+    
+    // TEMPORAL OJO ESTO NO DEBERIA IR AQUI OJOOOOOOOOOOOOOOO
+    @GetMapping("/provincias")
+    public List<Map<String, Object>> provincias() {
+        try (Connection con = ds.getConnection()) {
+
+            String sql = "SELECT id_provincia AS id, nombre FROM provincia";
+
+            return DB.queryMany(con, sql, rs -> {
+                Map<String, Object> p = new HashMap<>();
+                p.put("id", rs.getInt("id"));
+                p.put("nombre", rs.getString("nombre"));
+                return p;
+            });
+
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
+        }
+    }
+    
+    
 }
 
 

@@ -74,8 +74,14 @@ public class DB {
 		
 		debug(sql, params);
 		
+		System.out.println("david2 antes update SQL:" + sql);
+		System.out.println("david2 antes update PArams" + params);
+		
 		try (PreparedStatement stmt = con.prepareStatement(sql)) {
+			System.out.println("david3 antes bindParams stmt: " + stmt) ;
 			bindParams(stmt, params);
+			System.out.println("david3 despues bindParams stmt: " + stmt) ;
+
 			return stmt.executeUpdate();
 		}
 	}
@@ -86,6 +92,7 @@ public class DB {
 
 	private static void bindParams(PreparedStatement stmt, Object[] params) throws SQLException {
 		for (int i = 0; i < params.length; i++) {
+			System.out.println("params[%i] %s"+  params[i]) ;
 			stmt.setObject(i + 1, params[i]);
 		}
 	}

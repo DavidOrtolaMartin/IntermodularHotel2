@@ -120,7 +120,7 @@ public class UserRepository extends BaseRepository<User> {
 	                u.tlf1,
 	                u.tlf2,
 	                u.role,
-	                u.id_provincia
+	                u.id_provincia AS provinciaId
 	            FROM users u
 	            WHERE u.id = ?
 	        """;
@@ -133,11 +133,11 @@ public class UserRepository extends BaseRepository<User> {
 	            rs.getString("tlf1"),
 	            rs.getString("tlf2"),
 	            rs.getString("role"),
-	            rs.getInt("id_provincia")
+	            rs.getInt("provinciaId") // 👈 gracias al AS
 	        ), id);
 
 	    } catch (SQLException e) {
-	        throw new DataAccessException("Error obteniendo usuario admin para editar", e);
+	        throw new DataAccessException("Error obteniendo usuario para editar", e);
 	    }
 	}
 	
@@ -154,7 +154,7 @@ public class UserRepository extends BaseRepository<User> {
 	            role = ?
 	        WHERE id = ?
 	    """;
-
+	    System.out.println("david antes update," + sql);
 	    return DB.update(con, sql,
 	        u.provinciaId(), // 👈 ya no null
 	        u.name(),
