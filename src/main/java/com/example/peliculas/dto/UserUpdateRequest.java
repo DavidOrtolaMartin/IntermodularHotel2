@@ -1,7 +1,7 @@
 package com.example.peliculas.dto;
 
 
-public record UserEditAdmin(
+public record UserUpdateRequest(
     String name,
     String apellido1,
     String apellido2,
