@@ -88,8 +88,8 @@ public class UserRepository extends BaseRepository<User> {
 	                u.tlf2,
 	                u.role
 	            FROM users u
-	            JOIN provincia p ON u.id_provincia = p.id_provincia
-	        """;
+	            JOIN provincia p ON u.id_provincia = p.id 
+	        """;//vale recuerda que tienes q volver a escribir "JOIN provincia p ON u.id_provincia = p.id_provincia" para que no haya conflictos
 
 	        return DB.queryMany(con, sql, rs -> new UserAdmin(   //esto se construye en orden al constructor del dto useradmin
 	            rs.getInt("id"),

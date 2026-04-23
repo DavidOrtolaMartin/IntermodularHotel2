@@ -10,6 +10,7 @@ import org.springframework.dao.DuplicateKeyException;
 
 import com.example.peliculas.db.DB;
 import com.example.peliculas.exception.DataAccessException;
+import com.example.peliculas.exception.NotFoundException;
 import com.example.peliculas.mapper.RowMapper;
 
 public abstract class BaseRepository<T> {
@@ -41,6 +42,19 @@ public abstract class BaseRepository<T> {
 		try {
 			String sql = "SELECT * FROM " + getTable() + " WHERE " + getPrimaryKeyName() + " = ?";
 			return DB.queryOne(con, sql, mapper, id);
+		} catch (SQLException e) {
+			throw new DataAccessException("Error al buscar el registro con id=" + id + " en la tabla " + getTable(), e);
+		}
+	}
+	
+	public T findOrThrow(int id) {
+		try {
+			String sql = "SELECT * FROM " + getTable() + " WHERE " + getPrimaryKeyName() + " = ?";
+			T obj = DB.queryOne(con, sql, mapper, id);
+			if( obj == null) {
+				throw new NotFoundException("No existe el registro con id= " + id);
+			}
+			return obj;
 		} catch (SQLException e) {
 			throw new DataAccessException("Error al buscar el registro con id=" + id + " en la tabla " + getTable(), e);
 		}
