@@ -27,3 +27,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 	        }
 	    });
 });
+
+// 🔥 FORM RESERVA (modal)
+document.getElementById("form-reserva").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const fechaEntrada = document.getElementById("fechaEntrada").value;
+    const fechaSalida = document.getElementById("fechaSalida").value;
+
+    if (!fechaEntrada || !fechaSalida) {
+        alert("Debes seleccionar ambas fechas");
+        return;
+    }
+
+    if (fechaSalida <= fechaEntrada) {
+        alert("La fecha de salida debe ser posterior a la de entrada");
+        return;
+    }
+
+    window.location.href =
+        `/categorias/disponibles/index.html?desde=${fechaEntrada}&hasta=${fechaSalida}`;
+});
