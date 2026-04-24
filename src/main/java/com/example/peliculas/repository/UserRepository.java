@@ -11,7 +11,7 @@ import com.example.peliculas.mapper.UserMapper;
 import com.example.peliculas.mapper.UserResponseMapper;
 import com.example.peliculas.dto.UserAdmin;
 import com.example.peliculas.dto.UserResponse;
-import com.example.peliculas.dto.UserEditAdmin;
+import com.example.peliculas.dto.UserUpdateRequest;
 import com.example.peliculas.db.DB;
 
 public class UserRepository extends BaseRepository<User> {
@@ -109,7 +109,7 @@ public class UserRepository extends BaseRepository<User> {
 	}
 	
 
-	public UserEditAdmin findUserEditAdmin(int id) {
+	public UserUpdateRequest findUserEditAdmin(int id) {
 	    try {
 	        String sql = """
 	            SELECT 
@@ -125,7 +125,7 @@ public class UserRepository extends BaseRepository<User> {
 	            WHERE u.id = ?
 	        """;
 
-	        return DB.queryOne(con, sql, rs -> new UserEditAdmin(
+	        return DB.queryOne(con, sql, rs -> new UserUpdateRequest(
 	            rs.getString("name"),
 	            rs.getString("apellido1"),
 	            rs.getString("apellido2"),
@@ -141,7 +141,7 @@ public class UserRepository extends BaseRepository<User> {
 	    }
 	}
 	
-	public int updateAdmin(int id, UserEditAdmin u) throws SQLException {
+	public int updateAdmin(int id, UserUpdateRequest u) throws SQLException {
 	    String sql = """
 	        UPDATE users SET
 	            id_provincia = ?,

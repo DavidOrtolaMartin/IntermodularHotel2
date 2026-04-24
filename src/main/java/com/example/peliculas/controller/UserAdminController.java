@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.peliculas.db.DB;
 import com.example.peliculas.dto.UserAdmin;
-import com.example.peliculas.dto.UserEditAdmin;
+import com.example.peliculas.dto.UserStoreRequest;
+import com.example.peliculas.dto.UserUpdateRequest;
 import com.example.peliculas.entity.User;
 import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.repository.UserRepository;
@@ -28,6 +30,7 @@ import com.example.peliculas.repository.UserRepository;
 @RequestMapping("/api/admin/users")
 public class UserAdminController {
 	private final DataSource ds;
+	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public UserAdminController(DataSource ds) {
     	this.ds = ds;
@@ -44,7 +47,7 @@ public class UserAdminController {
     }
     
     @GetMapping("/{id}")
-    public UserEditAdmin showAdmin(@PathVariable int id) {
+    public UserUpdateRequest showAdmin(@PathVariable int id) {
     	System.out.println("JLD2:Dentro UserEditAdmin");
         try (Connection con = ds.getConnection()) {
         	System.out.println("JLD3:Dentro UserEditAdmin try");
@@ -59,21 +62,27 @@ public class UserAdminController {
     }
   
 
+  
+    
     @PostMapping
-    public User store(@RequestBody User usuario) {
+    public User store(@RequestBody UserStoreRequest u) {
         try (Connection con = ds.getConnection()) {
-        	UserRepository repo = new UserRepository(con);
-            repo.insert(usuario);
-            return usuario;
+            UserRepository repo = new UserRepository(con);
+
+            User user = map(u);
+            repo.insert(user);
+
+            return user;
+
         } catch (SQLException e) {
-            throw new DataAccessException(e);
+            throw new DataAccessException("Error creando usuario", e);
         }
     }
 
    
     
     @PutMapping("/{id}")
-    public User updateAdmin(@PathVariable int id, @RequestBody UserEditAdmin u) {
+    public User updateAdmin(@PathVariable int id, @RequestBody UserUpdateRequest u) {
     	System.out.println("---------------------------------------------------------------------------");
     	System.out.println("JLD3:Dentro Userupdte antedtry Find");
         try (Connection con = ds.getConnection()) {
@@ -115,6 +124,21 @@ public class UserAdminController {
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
+    }
+    
+    private User map(UserStoreRequest u) {
+        return new User(
+            null,              // id
+            u.name(),          // name
+            u.apellido1(),
+            u.apellido2(),
+            u.tlf1(),
+            u.tlf2(),
+            u.role(),
+            u.email(),
+            encoder.encode(u.password()),
+            u.provinciaId()
+        );
     }
     
     
