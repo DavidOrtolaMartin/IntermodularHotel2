@@ -15,7 +15,7 @@ function renderCategorias(categorias) {
     tbody.innerHTML = "";
 
     if (!categorias || categorias.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center">No hay categorías</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center">No hay categorías</td></tr>`;
         return;
     }
 
@@ -24,9 +24,22 @@ function renderCategorias(categorias) {
 
         tr.innerHTML = `
             <td>${e(c.id)}</td>
+
+            <td>
+                ${
+                    c.imagen
+                        ? `<img src="${e(c.imagen)}"
+                                alt="${e(c.nombre)}"
+                                style="width:60px;height:60px;object-fit:cover"
+                                class="img-thumbnail">`
+                        : `<span class="text-muted">-</span>`
+                }
+            </td>
+
             <td>${e(c.nombre)}</td>
             <td>${e(c.descripcion)}</td>
             <td>${e(c.precio)}€</td>
+
             <td>
                 <a href="/admin/categorias/edit.html?id=${c.id}" class="btn btn-sm btn-outline-primary">Editar</a>
                 <button class="btn btn-sm btn-outline-danger" onclick="eliminarCategoria(${c.id})">Borrar</button>

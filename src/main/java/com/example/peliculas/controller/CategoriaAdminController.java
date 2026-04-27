@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.peliculas.dto.CategoriaDetalleResponse;
+import com.example.peliculas.dto.CategoriaResumenResponse;
 import com.example.peliculas.dto.ImagenResponse;
 import com.example.peliculas.entity.Categoria;
 import com.example.peliculas.exception.DataAccessException;
@@ -38,10 +39,10 @@ public class CategoriaAdminController {
 	}
 	
 	@GetMapping
-    public List<Categoria> index() throws SQLException {
+    public List<CategoriaResumenResponse> index() throws SQLException {
     	try (Connection con = ds.getConnection()) {
     	    CategoriaRepository repo = new CategoriaRepository(con);
-    	    return repo.findAll();
+    	    return repo.findAllResumenResponses();
     	 } catch (SQLException e) {
     	        throw new DataAccessException(e);
     	 }
