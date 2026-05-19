@@ -3,13 +3,13 @@ package com.example.peliculas.entity;
 public class CategoriaImagen {
 
 	private Integer id;
-	private Integer habitacionId;
+	private Integer categoriaId;
 	private String url;
 	
-	public CategoriaImagen(Integer id, Integer habitacionId, String url) {
+	public CategoriaImagen(Integer id, Integer categoriaId, String url) {
 		super();
 		this.id = id;
-		this.habitacionId = habitacionId;
+		this.categoriaId = categoriaId;
 		this.url = url;
 	}
 
@@ -21,12 +21,12 @@ public class CategoriaImagen {
 		this.id = id;
 	}
 
-	public Integer getHabitacionId() {
-		return habitacionId;
+	public Integer getCategoriaId() {
+		return categoriaId;
 	}
 
-	public void setHabitacionId(Integer habitacionId) {
-		this.habitacionId = habitacionId;
+	public void setCategoriaId(Integer habitacionId) {
+		this.categoriaId = habitacionId;
 	}
 
 	public String getUrl() {
@@ -39,7 +39,7 @@ public class CategoriaImagen {
 
 	@Override
 	public String toString() {
-		return "CategoriaImagen [id=" + id + ", habitacionId=" + habitacionId + ", url=" + url + "]";
+		return "CategoriaImagen [id=" + id + ", categoriaId=" + categoriaId + ", url=" + url + "]";
 	}
 	
 	

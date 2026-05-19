@@ -46,3 +46,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadCategorias();
     await loadHabitacion();
 });
+
+

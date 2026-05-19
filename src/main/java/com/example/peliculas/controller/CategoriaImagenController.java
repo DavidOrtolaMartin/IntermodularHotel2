@@ -20,7 +20,7 @@ import com.example.peliculas.repository.DirectorRepository;
 import com.example.peliculas.validation.ImageValidator;
 
 @RestController
-@RequestMapping("/api/admin/directores/{directorId}/imagenes")
+@RequestMapping("/api/admin/categorias/{categoriaId}/imagenes")
 public class CategoriaImagenController extends BaseController {
 
 	private final StorageHelper storage;

@@ -28,7 +28,7 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "habitacionId", "url" };
+		return new String[] { "id", "categoria_id", "url" };
 	}
 	
 	@Override
@@ -43,12 +43,12 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 
 	@Override
 	public Object[] getInsertValues(CategoriaImagen ci) {
-		return new Object[] { ci.getHabitacionId(), ci.getUrl() };
+		return new Object[] { ci.getCategoriaId(), ci.getUrl() };
 	}
 
 	@Override
 	public Object[] getUpdateValues(CategoriaImagen ci) {
-		return new Object[] { ci.getHabitacionId(), ci.getUrl(), ci.getId() };
+		return new Object[] { ci.getCategoriaId(), ci.getUrl(), ci.getId() };
 	}
 	
 	public List<ImagenResponse> findByCategoriaId(int habitacionId) {
@@ -56,7 +56,7 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 		String sql = """
 					SELECT id, url
 					FROM categoria_imagenes
-					WHERE habitacionId = ?
+					WHERE categoria_id = ?
 					ORDER BY id ASC
 				""";
 
@@ -67,7 +67,7 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 			), habitacionId);
 			
 		} catch (SQLException e) {
-			throw new DataAccessException("Error Obteniendo las imágenes del director");
+			throw new DataAccessException("Error Obteniendo las imágenes de la categoría");
 		}
 	}
 	

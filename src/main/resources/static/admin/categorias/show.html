@@ -1,0 +1,146 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver categoría</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 class="mb-4">Detalle de categoría</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Nombre</th>
+            <td id="nombre"></td>
+        </tr>
+        <tr>
+            <th>Descripción</th>
+            <td id="descripcion"></td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td><span id="precio"></span> €</td>
+        </tr>
+    </table>
+
+    <a href="index.html" class="btn btn-primary mb-4">Volver</a>
+
+    <h3>Imágenes</h3>
+
+    <!-- Imagen principal -->
+    <div class="mb-3">
+        <img id="imagen-principal" style="max-width:300px; display:none;">
+    </div>
+
+    <!-- Galería -->
+    <div id="galeria" class="d-flex gap-2 flex-wrap mb-4"></div>
+
+    <!-- Formulario subida -->
+    <h5>Añadir imagen</h5>
+    <div class="d-flex gap-2 align-items-center mb-4">
+        <input type="file" id="input-imagen" accept="image/*" class="form-control" style="max-width:300px;">
+        <button id="btn-subir" class="btn btn-success">Subir</button>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div id="modal" style="
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+">
+    <div style="position:relative">
+        <button id="cerrar-modal" class="btn btn-light">✕</button>
+        <img id="modal-img" style="max-width:90vw;max-height:90vh">
+    </div>
+</div>
+
+<script type="module" src="/js/admin/categorias/show.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver categoría</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 class="mb-4">Detalle de categoría</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Nombre</th>
+            <td id="nombre"></td>
+        </tr>
+        <tr>
+            <th>Descripción</th>
+            <td id="descripcion"></td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td><span id="precio"></span> €</td>
+        </tr>
+    </table>
+
+    <a href="index.html" class="btn btn-primary mb-4">Volver</a>
+
+    <h3>Imágenes</h3>
+	-->
+    <!-- Imagen principal -->
+	<!-- 
+    <div class="mb-3">
+        <img id="imagen-principal" style="max-width:300px; display:none;">
+    </div>
+	-->
+    <!-- Galería -->
+	<!-- 
+    <div id="galeria" class="d-flex gap-2 flex-wrap"></div>
+
+</div>
+ -->
+<!-- Modal -->
+<!-- 
+<div id="modal" style="
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+">
+    <div style="position:relative">
+        <button id="cerrar-modal" class="btn btn-light">✕</button>
+        <img id="modal-img" style="max-width:90vw;max-height:90vh">
+    </div>
+</div>
+
+<script type="module" src="/js/admin/categorias/show.js"></script>
+
+</body>
+</html>-->

@@ -58,3 +58,6 @@ async function loadCategorias() {
         console.error("Error cargando categorías:", err);
     }
 }
+
+
+//error numHabitacion duplicado
