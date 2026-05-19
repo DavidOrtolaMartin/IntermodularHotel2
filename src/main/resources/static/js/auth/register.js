@@ -4,7 +4,7 @@ import { bind } from "/js/core/events.js";
 // 🔹 Cargar provincias
 async function loadProvincias() {
     try {
-        const res = await fetch("/api/admin/users/provincias");
+        const res = await fetch("/api/provincias");
         const provincias = await res.json();
 
         const select = document.getElementById("provinciaId");
@@ -55,28 +55,67 @@ async function handleRegister(e) {
 
     console.log("REGISTER payload:", user);
 
-    try {
-        await fetch("/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        });
+	try {
 
-        successDiv.style.display = "block";
+	    const res = await fetch("/api/register", {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        body: JSON.stringify(user)
+	    });
 
-        setTimeout(() => {
-            window.location.href = "/login.html";
-        }, 1500);
+	    // 👇 comprobar si ha fallado
+	    if (!res.ok) {
 
-    } catch (err) {
-        console.error(err);
-        errorDiv.textContent = "Error en el registro";
-        errorDiv.style.display = "block";
-    }
+	        let mensaje = "Error en el registro";
+
+			try {
+
+			    const data = await res.json();
+
+			    mensaje = data.message || "Error en el registro";
+
+			} catch {}
+
+	        // 👇 email duplicado
+			if (
+			    mensaje.toLowerCase().includes("existe")
+			    || mensaje.toLowerCase().includes("duplicate")
+			    || mensaje.toLowerCase().includes("duplicado")
+			) {
+
+	            errorDiv.textContent = "Ese email ya está registrado";
+
+	        } else {
+
+	            errorDiv.textContent = mensaje;
+
+	        }
+
+	        errorDiv.style.display = "block";
+	        return;
+	    }
+
+	    // 👇 éxito
+	    successDiv.textContent =
+	        "Registro realizado correctamente. Redirigiendo al login...";
+
+	    successDiv.style.display = "block";
+
+	    setTimeout(() => {
+	        window.location.href = "/login.html";
+	    }, 3000);
+
+	} catch (err) {
+
+	    console.error(err);
+
+	    errorDiv.textContent = "Error de conexión";
+
+	    errorDiv.style.display = "block";
+	}
 }
-
 // 🔹 Init
 app.run(() => {
     loadProvincias();

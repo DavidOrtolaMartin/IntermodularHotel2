@@ -100,9 +100,13 @@ public class UserAdminController {
     @DeleteMapping("/{id}")
     public void destroy(@PathVariable int id) {
         try (Connection con = ds.getConnection()) {
-        	UserRepository repo = new UserRepository(con);
+
+            UserRepository repo = new UserRepository(con);
+
             repo.delete(id);
+
         } catch (SQLException e) {
+
             throw new DataAccessException(e);
         }
     }

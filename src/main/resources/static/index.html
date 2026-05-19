@@ -23,7 +23,7 @@
             color: white;
         }
 
-        /* Capa oscura para que se lea bien */
+        /* Capa oscura */
         .overlay {
             position: absolute;
             top: 0;
@@ -61,6 +61,25 @@
             width: 100%;
             z-index: 3;
         }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            color: white;
+        }
+
+        footer h5,
+        footer h6 {
+            font-weight: bold;
+        }
+
+        footer p {
+            margin-bottom: 6px;
+        }
+
+        footer hr {
+            border-color: rgba(255,255,255,0.2);
+        }
     </style>
 </head>
 
@@ -69,42 +88,213 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="#">HOTEL MARQUESADO</a>
 
-		<div class="ms-auto d-flex align-items-center">
-		    
-		    <a href="/habitaciones.html" class="btn btn-outline-light me-2">
-		        Habitaciones
-		    </a>
+        <a class="navbar-brand fw-bold" href="#">
+            HOTEL MARQUESADO
+        </a>
 
-		    <!-- USUARIO LOGUEADO -->
-		    <span id="user-name" class="text-white me-3"></span>
+        <div class="ms-auto d-flex align-items-center">
 
-		    <!-- LOGIN -->
-		    <a href="/login.html" class="btn btn-light" id="login-link">
-		        Login
-		    </a>
+            <a href="/mis-reservas.html"
+               class="btn btn-outline-light me-2 d-none"
+               id="mis-reservas-btn">
+                Mis reservas
+            </a>
+			
+			<a
+			    href="/admin/index.html"
+			    class="btn btn-warning me-2 d-none"
+			    id="admin-link"
+			>
+			    Panel admin
+			</a>
 
-			<button class="btn btn-danger ms-2 d-none" id="logout-link">
-			    Logout
-			</button>
-		</div>
+            <a href="/habitaciones.html"
+               class="btn btn-outline-light me-2">
+                Habitaciones
+            </a>
+
+            <!-- USUARIO -->
+            <span id="user-name" class="text-white me-3"></span>
+
+            <!-- LOGIN -->
+            <a href="/login.html"
+               class="btn btn-light"
+               id="login-link">
+                Login
+            </a>
+
+            <button
+                class="btn btn-danger ms-2 d-none"
+                id="logout-link">
+                Logout
+            </button>
+
+        </div>
     </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
+
     <div class="overlay"></div>
 
     <div class="hero-content text-center">
-        <h1>HOTEL MARQUESADO</h1>
-        <p class="lead">Lujo, vistas y tranquilidad frente al mar</p>
 
-        <a href="/reservas.html" class="btn btn-primary btn-reservar">
+        <h1>HOTEL MARQUESADO</h1>
+
+        <p class="lead">
+            Lujo, vistas y tranquilidad frente al mar
+        </p>
+
+        <button
+            class="btn btn-primary btn-reservar"
+            data-bs-toggle="modal"
+            data-bs-target="#modalReserva"
+        >
             Reservar ahora
-        </a>
+        </button>
+
     </div>
 </div>
+
+<!-- MODAL -->
+<div class="modal fade" id="modalReserva" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form id="form-reserva">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Buscar disponibilidad
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label>Fecha entrada</label>
+
+                        <input
+                            type="date"
+                            id="fechaEntrada"
+                            class="form-control"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Fecha salida</label>
+
+                        <input
+                            type="date"
+                            id="fechaSalida"
+                            class="form-control"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button class="btn btn-primary">
+                        Buscar habitaciones
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="mt-0">
+
+    <div class="container py-5">
+
+        <div class="row">
+
+            <!-- HOTEL -->
+            <div class="col-md-4 mb-4">
+
+                <h5>Hotel Marquesado</h5>
+
+                <p>
+                    Lujo, confort y tranquilidad en primera línea de costa.
+                </p>
+
+                <p class="text-secondary">
+                    Vive una experiencia premium en Valencia.
+                </p>
+
+            </div>
+
+            <!-- CONTACTO -->
+            <div class="col-md-4 mb-4">
+
+                <h6>Contacto</h6>
+
+                <p>info@hotelmarquesado.com</p>
+
+                <p>+34 600 000 000</p>
+
+                <p>Valencia, España</p>
+
+            </div>
+
+            <!-- DESARROLLADORES -->
+            <div class="col-md-4 mb-4">
+
+                <h6>Desarrolladores</h6>
+
+                <p>David Ortolá</p>
+
+                <p>Pedro</p>
+
+                <p class="text-secondary">
+                    Sistema desarrollado con Java Spring Boot
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="text-center text-secondary small">
+
+            © 2026 Hotel Marquesado · Todos los derechos reservados
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script type="module" src="/js/index.js"></script>
+
 </body>
 </html>

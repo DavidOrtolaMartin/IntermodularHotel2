@@ -4,75 +4,82 @@ import java.time.LocalDate;
 
 public class Reserva {
 
-	private Integer id;
-	private Integer usuarioId;
-	private LocalDate fecha_desde;
-	private LocalDate fecha_hasta;
-	
-	
-	//al mapear rs.getDate, y transformarlo a .localdate
-	
-	//en el map hay que poner lo de mi foto, en el db al reves(ya lo copié) y en los demás apartedos ya trabajo siempore con LocalDate.
-	
-	public Reserva(Integer id, Integer id_usuario, LocalDate fecha_desde, LocalDate fecha_hasta) {
+
+	 private Integer idReserva;
+	 private Integer userId;
+	 private Integer habId;
+	 private LocalDate fechaDesde;
+	 private LocalDate fechaHasta;
+	 private Boolean pagado;
+	 private LocalDate fechaPagado;
+	 
+	 
+	 
+	 
+	 
+	 public Reserva(Integer idReserva, Integer userId, Integer habId, LocalDate fechaDesde, LocalDate fechaHasta,
+			Boolean pagado, LocalDate fechaPagado) {
 		super();
-		this.id = id;
-		this.usuarioId = id_usuario;
-		this.fecha_desde = fecha_desde;
-		this.fecha_hasta = fecha_hasta;
+		this.idReserva = idReserva;
+		this.userId = userId;
+		this.habId = habId;
+		this.fechaDesde = fechaDesde;
+		this.fechaHasta = fechaHasta;
+		this.pagado = pagado;
+		this.fechaPagado = fechaPagado;
 	}
+	 public Integer getIdReserva() {
+		 return idReserva;
+	 }
+	 public void setIdReserva(Integer idReserva) {
+		 this.idReserva = idReserva;
+	 }
+	 public Integer getUserId() {
+		 return userId;
+	 }
+	 public void setUserId(Integer userId) {
+		 this.userId = userId;
+	 }
+	 public Integer getHabId() {
+		 return habId;
+	 }
+	 public void setHabId(Integer habId) {
+		 this.habId = habId;
+	 }
+	 public LocalDate getFechaDesde() {
+		 return fechaDesde;
+	 }
+	 public void setFechaDesde(LocalDate fechaDesde) {
+		 this.fechaDesde = fechaDesde;
+	 }
+	 public LocalDate getFechaHasta() {
+		 return fechaHasta;
+	 }
+	 public void setFechaHasta(LocalDate fechaHasta) {
+		 this.fechaHasta = fechaHasta;
+	 }
+	 public Boolean getPagado() {
+		 return pagado;
+	 }
+	 public void setPagado(Boolean pagado) {
+		 this.pagado = pagado;
+	 }
+	 public LocalDate getFechaPagado() {
+		 return fechaPagado;
+	 }
+	 public void setFechaPagado(LocalDate fechaPagado) {
+		 this.fechaPagado = fechaPagado;
+	 }
+	 @Override
+	 public String toString() {
+		return "Reserva [idReserva=" + idReserva + ", userId=" + userId + ", habId=" + habId + ", fechaDesde="
+				+ fechaDesde + ", fechaHasta=" + fechaHasta + ", pagado=" + pagado + ", fechaPagado=" + fechaPagado
+				+ "]";
+	 }
+	 
 
-
-	public Integer getId() {
-		return id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-
-	public Integer getUsuarioId() {
-		return usuarioId;
-	}
-
-
-	public void setUsuarioId(Integer id_usuario) {
-		this.usuarioId = id_usuario;
-	}
-
-
-	public LocalDate getFecha_desde() {
-		return fecha_desde;
-	}
-
-
-	public void setFecha_desde(LocalDate fecha_desde) {
-		this.fecha_desde = fecha_desde;
-	}
-
-
-	public LocalDate getFecha_hasta() {
-		return fecha_hasta;
-	}
-
-
-	public void setFecha_hasta(LocalDate fecha_hasta) {
-		this.fecha_hasta = fecha_hasta;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Reserva [id=" + id + ", id_usuario=" + usuarioId + ", fecha_desde=" + fecha_desde + ", fecha_hasta="
-				+ fecha_hasta + "]";
-	}
-	
-	
-	
-	
-	
-	
+	 
+	 
+	 
 }
 

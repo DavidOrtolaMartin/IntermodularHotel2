@@ -47,7 +47,7 @@ function fillForm(u) {
     document.getElementById("role").value = u.role || "";
 
     // 👇 ESTO ES LA CLAVE
-    document.getElementById("provinciaId").value = String(u.provinciaId);
+    document.getElementById("provinciaId").value = String(u.provincia_id);
 }
 
 // 🔹 Submit

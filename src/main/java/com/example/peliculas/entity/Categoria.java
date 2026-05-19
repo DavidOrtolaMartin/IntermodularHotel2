@@ -2,25 +2,25 @@ package com.example.peliculas.entity;
 
 public class Categoria {
 
-	private Integer id;
+	private Integer id_categoria;
 	private String nombre;
 	private String descripcion;
 	private int precio;
 	
 	public Categoria(Integer id, String nombre, String descripcion, int precio) {
 		super();
-		this.id = id;
+		this.id_categoria = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precio = precio;
 	}
 
 	public Integer getId() {
-		return id;
+		return id_categoria;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.id_categoria = id;
 	}
 
 	public String getNombre() {
@@ -49,7 +49,7 @@ public class Categoria {
 
 	@Override
 	public String toString() {
-		return "Categoria [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio
+		return "Categoria [id=" + id_categoria + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio
 				+ "]";
 	}
 	

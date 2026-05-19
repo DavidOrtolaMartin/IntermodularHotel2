@@ -59,12 +59,12 @@ public class HabitacionRepository extends BaseRepository<Habitacion>{
 	    try {
 	        String sql = """
 	            SELECT 
-	                h.id,
-	                h.numHabitacion AS numero,
+	                h.id_habitacion as id,
+	                h.num_hab AS numero,
 	                c.nombre AS categoria,
 	                c.precio AS precio
 	            FROM habitacion h
-	            JOIN categoria c ON h.categoriaId = c.id
+	            JOIN categoria c ON h.categoria_id = c.id_categoria
 	        """;
 
 	        return DB.queryMany(con, sql, rs -> new HabitacionDTO(

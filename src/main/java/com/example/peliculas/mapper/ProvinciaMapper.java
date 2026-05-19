@@ -10,9 +10,8 @@ public class ProvinciaMapper implements RowMapper<Provincia>{
 	@Override
 	public Provincia map(ResultSet rs) throws SQLException {
 		return new Provincia(
-				rs.getInt("id"),
-				rs.getString("nombre"),
-				rs.getInt("id_pais")
+				rs.getInt("id_provincia"),
+				rs.getString("nombre")				
 				);
 	}
 	

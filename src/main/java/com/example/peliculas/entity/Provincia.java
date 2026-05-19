@@ -2,23 +2,23 @@ package com.example.peliculas.entity;
 
 public class Provincia {
 
-	private Integer id;
+	private Integer id_provincia;
 	private String nombre;
-	private Integer paisId;
 	
-	public Provincia(Integer id, String nombre, Integer paisId) {
+	
+	public Provincia(Integer id, String nombre) {
 		super();
-		this.id = id;
+		this.id_provincia = id;
 		this.nombre = nombre;
-		this.paisId = paisId;
+		
 	}
 
 	public Integer getId() {
-		return id;
+		return id_provincia;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.id_provincia = id;
 	}
 
 	public String getNombre() {
@@ -29,17 +29,11 @@ public class Provincia {
 		this.nombre = nombre;
 	}
 
-	public Integer getPaisId() {
-		return paisId;
-	}
 
-	public void setPaisId(Integer paisId) {
-		this.paisId = paisId;
-	}
 
 	@Override
 	public String toString() {
-		return "Provincia [id=" + id + ", nombre=" + nombre + ", paisId=" + paisId + "]";
+		return "Provincia [id=" + id_provincia + ", nombre=" + nombre + "]";
 	}
 	
 	
