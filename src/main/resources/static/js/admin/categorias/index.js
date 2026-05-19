@@ -41,6 +41,7 @@ function renderCategorias(categorias) {
             <td>${e(c.precio)}€</td>
 
             <td>
+				<a href="/admin/categorias/show.html?id=${c.id}" class="btn btn-sm btn-outline-info">Ver</a>
                 <a href="/admin/categorias/edit.html?id=${c.id}" class="btn btn-sm btn-outline-primary">Editar</a>
                 <button class="btn btn-sm btn-outline-danger" onclick="eliminarCategoria(${c.id})">Borrar</button>
             </td>

@@ -28,7 +28,7 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "categoriaId", "url" };
+		return new String[] { "id", "categoria_id", "url" };
 	}
 	
 	@Override
@@ -56,7 +56,7 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 		String sql = """
 					SELECT id, url
 					FROM categoria_imagenes
-					WHERE categoriaId = ?
+					WHERE categoria_id = ?
 					ORDER BY id ASC
 				""";
 
@@ -67,7 +67,7 @@ public class CategoriaImagenRepository extends BaseRepository<CategoriaImagen>{
 			), habitacionId);
 			
 		} catch (SQLException e) {
-			throw new DataAccessException("Error Obteniendo las imágenes del director");
+			throw new DataAccessException("Error Obteniendo las imágenes de la categoría");
 		}
 	}
 	

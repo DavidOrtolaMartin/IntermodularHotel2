@@ -61,7 +61,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	                c.descripcion,
 	                c.precio,
 	                (SELECT url FROM categoria_imagenes ci
-	                WHERE ci.categoriaId = c.id
+	                WHERE ci.categoria_id = c.id
 	                ORDER BY ci.id ASC
 	                LIMIT 1) AS imagen
 	            FROM categoria c
