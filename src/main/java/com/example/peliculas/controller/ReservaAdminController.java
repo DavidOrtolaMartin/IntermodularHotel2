@@ -62,17 +62,45 @@ public class ReservaAdminController {
 	
 
 	@PutMapping("/{id}")
-    public Reserva update(@PathVariable int id, @RequestBody Reserva reserva) {
-    	System.out.println(reserva);
-        try (Connection con = ds.getConnection()) {
-        	ReservaRepository repo = new ReservaRepository(con);
-            reserva.setId(id);
-            repo.update(reserva);
-            return reserva;
-        } catch (SQLException e) {
-            throw new DataAccessException(e);
-        }
-    }
+	public Reserva update(
+	        @PathVariable int id,
+	        @RequestBody Reserva reserva
+	) {
+
+	    System.out.println(reserva);
+
+	    try (Connection con = ds.getConnection()) {
+
+	        ReservaRepository repo =
+	            new ReservaRepository(con);
+
+	        // 🔹 comprobar solapamiento
+	        boolean ocupada =
+	            repo.existsSolapamiento(
+	                reserva.getHabId(),
+	                id,
+	                reserva.getFechaDesde().toString(),
+	                reserva.getFechaHasta().toString()
+	            );
+
+	        if (ocupada) {
+
+	            throw new RuntimeException(
+	                "La habitación ya está reservada en esas fechas"
+	            );
+	        }
+
+	        reserva.setIdReserva(id);
+
+	        repo.update(reserva);
+
+	        return reserva;
+
+	    } catch (SQLException e) {
+
+	        throw new DataAccessException(e);
+	    }
+	}
 	
 	
 	@DeleteMapping("/{id}")

@@ -41,6 +41,7 @@ public abstract class BaseRepository<T> {
 	public T find(int id) {
 		try {
 			String sql = "SELECT * FROM " + getTable() + " WHERE " + getPrimaryKeyName() + " = ?";
+			
 			return DB.queryOne(con, sql, mapper, id);
 		} catch (SQLException e) {
 			throw new DataAccessException("Error al buscar el registro con id=" + id + " en la tabla " + getTable(), e);

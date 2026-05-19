@@ -33,23 +33,27 @@ public class AuthController extends BaseController {
 	@PostMapping("/api/login")
 	public void login(@RequestBody LoginRequest req, HttpSession session) {
 
-		try (Connection con = ds.getConnection()) {
+	    try (Connection con = ds.getConnection()) {
 
-			UserRepository repo = new UserRepository(con);
+	        UserRepository repo = new UserRepository(con);
 
-			User user = repo.findByEmail(req.email());
-			// System.out.println(encoder.encode("123456"));
+	        User user = repo.findByEmail(req.email());
 
-			if (user != null && encoder.matches(req.password(), user.getPassword())) {
-				session.setAttribute("userId", user.getId());
-				session.setAttribute("role", user.getRole());
-				return;
-			}
+	        if (user != null && encoder.matches(req.password(), user.getPassword())) {
+	            session.setAttribute("userId", user.getId());
+	            session.setAttribute("role", user.getRole());
+	            return;
+	        }
 
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-		} catch (SQLException e) {
-			throw new DataAccessException(e);
-		}
+	        // 👇 IMPORTANTE: esto evita el 500
+	        throw new ResponseStatusException(
+	            HttpStatus.UNAUTHORIZED,
+	            "Usuario o contraseña incorrectos"
+	        );
+
+	    } catch (SQLException e) {
+	        throw new DataAccessException(e);
+	    }
 	}
 
 	// REGISTER

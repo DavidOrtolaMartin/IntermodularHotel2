@@ -24,7 +24,7 @@ public class ProvinciaRepository extends BaseRepository<Provincia>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "nombre", "id_pais"};
+		return new String[] { "id", "nombre"};
 	}
 	
 	@Override
@@ -39,12 +39,12 @@ public class ProvinciaRepository extends BaseRepository<Provincia>{
 	
 	@Override
 	public Object[] getInsertValues(Provincia p) {
-		return new Object[] {p.getId(), p.getNombre(), p.getPaisId()};
+		return new Object[] {p.getId(), p.getNombre()};
 	}
 
 	@Override
 	public Object[] getUpdateValues(Provincia p) {
-		return new Object[] {p.getId(), p.getNombre(), p.getPaisId() };
+		return new Object[] {p.getId(), p.getNombre() };
 	}
 	
 	

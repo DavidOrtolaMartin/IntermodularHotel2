@@ -1,12 +1,99 @@
 body {
-    padding-top: 40px;
+    background: linear-gradient(to bottom, #eef4fb, #dfeaf7);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #1e293b;
 }
 
+/* Containers */
 .container {
-    max-width: 800px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
 }
 
-.sinopsis {
-    margin-top: 20px;
-    font-style: italic;
+/* Títulos */
+h1, h2, h3 {
+    font-weight: bold;
+    color: #0b3b66;
+}
+
+/* Panel admin */
+.admin-panel {
+    max-width: 700px;
+    margin: 80px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+
+/* Usuario */
+.admin-user {
+    margin-bottom: 30px;
+    color: #4b5563;
+    font-size: 1.05rem;
+}
+
+/* Menú admin */
+.admin-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-links li {
+    margin-bottom: 16px;
+}
+
+.admin-links a {
+    display: block;
+    text-decoration: none;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(37,99,235,0.2);
+}
+
+.admin-links a:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.3);
+}
+
+/* Tablas */
+table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* Botones */
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
 }

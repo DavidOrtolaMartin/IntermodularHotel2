@@ -3,35 +3,47 @@ export const api = {
 	async request(url, options = {}) {
 
 		console.log(url);
-		
-	    const { headers = {}, ...rest } = options;
 
-	    const config = {
-	        credentials: "same-origin",
+		const { headers = {}, ...rest } = options;
 
-	        ...rest,
+		const config = {
+			credentials: "same-origin",
+			...rest,
+			headers: {
+				"Accept": "application/json",
+				...headers
+			}
+		};
 
-	        headers: {
-	            "Accept": "application/json",
-	            ...headers
-	        }
-	    };
-
-	    const response = await fetch(url, config);
+		const response = await fetch(url, config);
 
 		let data = null;
 
+		// 🔥 FIX IMPORTANTE: lectura segura de respuesta
 		if (response.status !== 204) {
-			try {
-				data = await response.json();
-			} catch {}
+
+			const text = await response.text();
+
+			if (text) {
+				try {
+					data = JSON.parse(text);
+				} catch {
+					data = { message: text };
+				}
+			}
 		}
-		
+
+		// ❌ manejo de errores consistente
 		if (!response.ok) {
-			const e = new Error(data?.message || "HTTP error");
-			e.status = response.status;
-			e.data = data;
-			throw e;
+
+			const error = new Error(
+				data?.message || `HTTP ${response.status}`
+			);
+
+			error.status = response.status;
+			error.data = data;
+
+			throw error;
 		}
 
 		return data;
@@ -43,24 +55,23 @@ export const api = {
 
 	async post(url, data, options = {}) {
 
-	    const { headers = {}, ...rest } = options;
+		const { headers = {}, ...rest } = options;
 
-	    return this.request(url, {
-	        method: "POST",
+		return this.request(url, {
+			method: "POST",
 			headers: {
-				 "Content-Type": "application/json",
-				 ...headers
+				"Content-Type": "application/json",
+				...headers
 			},
-	        body: JSON.stringify(data),
-	        ...rest
-	        
-	    });
+			body: JSON.stringify(data),
+			...rest
+		});
 	},
 
 	async put(url, data, options = {}) {
-		
+
 		const { headers = {}, ...rest } = options;
-		
+
 		return this.request(url, {
 			method: "PUT",
 			headers: {

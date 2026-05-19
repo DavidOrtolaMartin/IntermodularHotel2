@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.peliculas.db.DB;
+import com.example.peliculas.dto.CategoriaDisponibleResponse;
 import com.example.peliculas.entity.Reserva;
 import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.mapper.ReservaMapper;
@@ -26,35 +28,56 @@ public class ReservaRepository extends BaseRepository<Reserva>{
 	public String getTable() {
 		return "reserva";
 	}
+	
+	@Override
+	public String getPrimaryKeyName() {
+	    return "id_reserva";
+	}
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "id_usuario", "fecha_desde", "fecha_hasta"};
+		return new String[] { "id_reserva", "user_id",
+		        "hab_id",
+		        "fecha_desde",
+		        "fecha_hasta",
+		        "pagado",
+		        "fecha_pagado"};
 	}
 	
 	@Override
 	public void setPrimaryKey(Reserva r, int id) {
-		r.setId(id);
+		r.setIdReserva(id);
 	}
 	
 	@Override
 	public Integer getPrimaryKey(Reserva reserva) {
-		return reserva.getId();
+		return reserva.getIdReserva();
 	}
 
 	@Override
 	public Object[] getInsertValues(Reserva r) {
-		return new Object[] {r.getUsuarioId(), r.getFecha_desde(), r.getFecha_hasta()};
+		return new Object[] {r.getUserId(),
+		        r.getHabId(),
+		        r.getFechaDesde(),
+		        r.getFechaHasta(),
+		        r.getPagado(),
+		        r.getFechaPagado()};
 	}
 
 	@Override
 	public Object[] getUpdateValues(Reserva r) {
-		return new Object[] {r.getUsuarioId(), r.getFecha_desde(), r.getFecha_hasta() };
+		return new Object[] { r.getUserId(),
+		        r.getHabId(),
+		        r.getFechaDesde(),
+		        r.getFechaHasta(),
+		        r.getPagado(),
+		        r.getFechaPagado(),
+		        r.getIdReserva() };
 	}
 	
 	
 	public List<Reserva> findByUserId(int id){
-		String sql = "SELECT * FROM reserva WHERE id_usuario = ?";
+		String sql = "SELECT * FROM reserva WHERE user_id = ?";
 		List<Reserva> reservas = new ArrayList<>();
 		try(PreparedStatement stmt = this.con.prepareStatement(sql)){
 			stmt.setInt(1, id);
@@ -70,7 +93,97 @@ public class ReservaRepository extends BaseRepository<Reserva>{
 		}
 	}
 
+	public List<CategoriaDisponibleResponse> findDisponibles(String desde, String hasta) throws SQLException {
+
+	    String sql = """
+	        SELECT
+	            c.id_categoria,
+	            c.nombre,
+	            c.precio AS precioPorDia,
+	            MIN(h.id_habitacion) AS habitacionId
+	        FROM categoria c
+	        JOIN habitacion h
+	            ON h.categoria_id = c.id_categoria
+	        WHERE h.id_habitacion NOT IN (
+	            SELECT r.hab_id
+	            FROM reserva r
+	            WHERE NOT (
+	                r.fecha_hasta < ?
+	                OR r.fecha_desde > ?
+	            )
+	        )
+	        GROUP BY
+	            c.id_categoria,
+	            c.nombre,
+	            c.precio
+	    """;
+
+	    return DB.queryMany(con, sql, rs -> {
+
+	        int precioPorDia = rs.getInt("precioPorDia");
+
+	        java.time.LocalDate f1 = java.time.LocalDate.parse(desde);
+	        java.time.LocalDate f2 = java.time.LocalDate.parse(hasta);
+
+	        long dias = java.time.temporal.ChronoUnit.DAYS.between(f1, f2);
+
+	        int precioTotal = (int) dias * precioPorDia;
+
+	        return new CategoriaDisponibleResponse(
+	            rs.getInt("id_categoria"),
+	            rs.getString("nombre"),
+	            precioPorDia,
+	            precioTotal,
+	            rs.getInt("habitacionId")
+	        );
+	    }, desde, hasta);
+	}
 	
+	public boolean existsSolapamiento(
+	        int habId,
+	        int reservaId,
+	        String desde,
+	        String hasta
+	) {
+
+	    String sql = """
+	        SELECT COUNT(*)
+	        FROM reserva
+	        WHERE hab_id = ?
+	        AND id_reserva != ?
+	        AND NOT (
+	            fecha_hasta < ?
+	            OR fecha_desde > ?
+	        )
+	    """;
+
+	    try (
+	        PreparedStatement stmt =
+	            con.prepareStatement(sql)
+	    ) {
+
+	        stmt.setInt(1, habId);
+
+	        stmt.setInt(2, reservaId);
+
+	        stmt.setString(3, desde);
+
+	        stmt.setString(4, hasta);
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        rs.next();
+
+	        return rs.getInt(1) > 0;
+
+	    } catch (SQLException e) {
+
+	        throw new DataAccessException(
+	            "Error comprobando disponibilidad",
+	            e
+	        );
+	    }
+	}
 	
 	
 }
