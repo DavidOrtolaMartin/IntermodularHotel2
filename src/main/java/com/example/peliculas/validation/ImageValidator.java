@@ -1,4 +1,4 @@
-/*package com.example.peliculas.validation;
+package com.example.peliculas.validation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,4 +40,3 @@ public class ImageValidator {
 		}
 	}
 }
-*/

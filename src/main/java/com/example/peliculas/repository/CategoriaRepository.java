@@ -28,7 +28,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "nombre", "descripcion", "precio"};
+		return new String[] { "id_categoria", "nombre", "descripcion", "precio"};
 	}
 	
 	@Override
@@ -56,12 +56,12 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	    try {
 	        String sql = """
 	            SELECT 
-	                c.id,
+	                c.id_categoria,
 	                c.nombre,
 	                c.descripcion,
 	                c.precio,
 	                (SELECT url FROM categoria_imagenes ci
-	                WHERE ci.categoria_id = c.id
+	                WHERE ci.categoria_id = c.id_categoria
 	                ORDER BY ci.id ASC
 	                LIMIT 1) AS imagen
 	            FROM categoria c
@@ -69,7 +69,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	        """;
 
 	        return DB.queryMany(con, sql, rs -> new CategoriaResumenResponse(
-	            rs.getInt("id"),
+	            rs.getInt("id_categoria"),
 	            rs.getString("nombre"),
 	            rs.getString("descripcion"),
 	            rs.getInt("precio"),
@@ -80,8 +80,15 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	        throw new DataAccessException("Error obteniendo categorías con imagen", e);
 	    }
 	}
-	//}
-	//findAllForIndex
+	
+	public Categoria findOrThrow(int id) {
+		try {
+			String sql = "select * from categoria where id_categoria = ?";
+			return DB.queryOne(con, sql, mapper, id);
+		} catch (SQLException e) {
+			throw new DataAccessException("Error al buscar categoria con id=" + id, e);
+		}
+	}
 	
 	
 }
