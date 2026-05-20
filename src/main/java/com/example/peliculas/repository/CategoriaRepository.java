@@ -28,7 +28,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id_categoria", "nombre", "descripcion", "precio"};
+		return new String[] {"nombre", "descripcion", "precio"};
 	}
 	
 	@Override
@@ -82,12 +82,36 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	}
 	
 	public Categoria findOrThrow(int id) {
-		try {
-			String sql = "select * from categoria where id_categoria = ?";
-			return DB.queryOne(con, sql, mapper, id);
-		} catch (SQLException e) {
-			throw new DataAccessException("Error al buscar categoria con id=" + id, e);
-		}
+	    try {
+	        String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
+	        return DB.queryOne(con, sql, mapper, id);
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al buscar categoría con id=" + id, e);
+	    }
+	}
+	
+	
+	@Override
+	public int update(Categoria c) {
+	    try {
+	        String sql = "UPDATE categoria SET nombre = ?, descripcion = ?, precio = ? WHERE id_categoria = ?";
+	        return DB.update(con, sql, c.getNombre(), c.getDescripcion(), c.getPrecio(), c.getId());
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al actualizar categoría con id=" + c.getId(), e);
+	    }
+	}
+	
+	
+
+	@Override
+	public boolean delete(int id) {
+	    try {
+	        String sql = "DELETE FROM categoria WHERE id_categoria = ?";
+	        DB.update(con, sql, id);
+	        return true;
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al eliminar categoría con id=" + id, e);
+	    }
 	}
 	
 	

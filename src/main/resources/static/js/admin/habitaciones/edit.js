@@ -11,7 +11,7 @@ async function loadCategorias() {
     categorias.forEach(c => {
         const option = document.createElement("option");
         option.value = c.id;
-        option.textContent = c.nombre;
+        option.textContent = `${c.nombre} (${c.precio}€)`;
         select.appendChild(option);
     });
 }
