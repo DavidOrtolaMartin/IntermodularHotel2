@@ -16,7 +16,6 @@ import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.helper.StorageHelper;
 import com.example.peliculas.repository.CategoriaImagenRepository;
 import com.example.peliculas.repository.CategoriaRepository;
-import com.example.peliculas.repository.DirectorRepository;
 import com.example.peliculas.validation.ImageValidator;
 
 @RestController

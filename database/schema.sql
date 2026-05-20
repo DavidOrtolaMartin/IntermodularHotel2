@@ -1,55 +1,75 @@
-CREATE TABLE directores (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    pais VARCHAR(100) NOT NULL
+
+CREATE TABLE provincia (
+    id_provincia INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE peliculas (
-  id INTEGER AUTO_INCREMENT PRIMARY KEY,
-  titulo VARCHAR(255) NOT NULL,
-  anyo SMALLINT UNSIGNED NOT NULL,
-  duracion SMALLINT UNSIGNED NOT NULL,
-  sinopsis TEXT NOT NULL,
-  director_id INTEGER NOT NULL,
-
-  CONSTRAINT fk_peliculas_director
-    FOREIGN KEY (director_id)
-    REFERENCES directores(id)
-);
 
 CREATE TABLE users (
-  id INTEGER AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) NOT NULL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_provincia INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    apellido1 VARCHAR(50) NOT NULL,
+    apellido2 VARCHAR(50),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    tlf1 VARCHAR(15) NOT NULL,
+    tlf2 VARCHAR(15),
+    role VARCHAR(20) NOT NULL DEFAULT 'USER',
+    password VARCHAR(255) NOT NULL,
+
+    CONSTRAINT fk_user_provincia
+        FOREIGN KEY (id_provincia)
+        REFERENCES provincia(id_provincia)
 );
 
-CREATE TABLE votos (
 
-    id INT AUTO_INCREMENT PRIMARY KEY,
 
-    pelicula_id INT NOT NULL,
+CREATE TABLE categoria (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    precio INT NOT NULL,
+    descripcion VARCHAR(255)
+);
+
+
+CREATE TABLE habitacion (
+    id_habitacion INT AUTO_INCREMENT PRIMARY KEY,
+    categoria_id INT NOT NULL,
+    num_hab INT NOT NULL,
+
+    CONSTRAINT fk_habitacion_categoria
+        FOREIGN KEY (categoria_id)
+        REFERENCES categoria(id_categoria)
+);
+
+
+CREATE TABLE reserva (
+    id_reserva INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+    hab_id INT NOT NULL,
+    fecha_desde DATE NOT NULL,
+    fecha_hasta DATE NOT NULL,
+    pagado BOOLEAN,
+    fecha_pagado DATE,
 
-    puntuacion TINYINT UNSIGNED NOT NULL,
-    critica TEXT,
-
-    fecha DATE NOT NULL,
-
-    UNIQUE (pelicula_id, user_id),
-
-    CONSTRAINT fk_votos_pelicula
-        FOREIGN KEY (pelicula_id)
-        REFERENCES peliculas(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_votos_user
+    CONSTRAINT fk_reserva_user
         FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE,
+        REFERENCES users(id),
 
-    CONSTRAINT chk_puntuacion
-        CHECK (puntuacion BETWEEN 1 AND 10)
+    CONSTRAINT fk_reserva_habitacion
+        FOREIGN KEY (hab_id)
+        REFERENCES habitacion(id_habitacion)
+);
 
+CREATE TABLE categoria_imagenes (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+  
+   categoria_id INT NOT NULL,
+  
+   url VARCHAR(500) NOT NULL,
+
+   CONSTRAINT fk_categoria_imagen
+       FOREIGN KEY (categoria_id)
+       REFERENCES categoria(id_categoria)
+       ON DELETE CASCADE
 );
