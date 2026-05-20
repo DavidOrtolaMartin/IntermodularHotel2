@@ -1,4 +1,4 @@
-/*package com.example.peliculas.validation;
+package com.example.peliculas.validation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,7 @@ public class ImageValidator {
 
 	private static final Set<String> ALLOWED_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
 
-	private static final long MAX_SIZE = 2_000_000; // 2MB
+	private static final long MAX_SIZE = 20_000_000; // 20MB o 20000kb
 
 	public static void validate(MultipartFile file) {
 
@@ -40,4 +40,3 @@ public class ImageValidator {
 		}
 	}
 }
-*/

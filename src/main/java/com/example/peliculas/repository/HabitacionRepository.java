@@ -31,7 +31,7 @@ public class HabitacionRepository extends BaseRepository<Habitacion>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "numHabitacion", "categoriaId"};
+		return new String[] { "num_hab", "categoria_id"};
 	}
 	
 	@Override
@@ -79,6 +79,38 @@ public class HabitacionRepository extends BaseRepository<Habitacion>{
 	    }
 	}
 
-	    
+	
+	//estos tres métodos hacen falta porq ahora la bbdd usa id_habitación en vez de id como dice el base repository
+	@Override
+	public Habitacion find(int id) {
+	    try {
+	        String sql = "SELECT * FROM habitacion WHERE id_habitacion = ?";
+	        return DB.queryOne(con, sql, mapper, id);
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al buscar habitación con id=" + id, e);
+	    }
+	}
+
+	@Override
+	public boolean delete(int id) {
+	    try {
+	        String sql = "DELETE FROM habitacion WHERE id_habitacion = ?";
+	        DB.update(con, sql, id);
+	        return true;
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al eliminar habitación con id=" + id, e);
+	    }
+	}
+
+	@Override
+	public int update(Habitacion h) {
+	    try {
+	        String sql = "UPDATE habitacion SET num_hab = ?, categoria_id = ? WHERE id_habitacion = ?";
+	        return DB.update(con, sql, h.getNumHabitacion(), h.getCategoriaId(), h.getId());
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al actualizar habitación con id=" + h.getId(), e);
+	    }
+	}
+	
 	
 }

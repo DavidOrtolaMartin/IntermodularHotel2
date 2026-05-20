@@ -28,7 +28,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 
 	@Override
 	public String[] getColumnNames() {
-		return new String[] { "id", "nombre", "descripcion", "precio"};
+		return new String[] {"nombre", "descripcion", "precio"};
 	}
 	
 	@Override
@@ -56,12 +56,12 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	    try {
 	        String sql = """
 	            SELECT 
-	                c.id,
+	                c.id_categoria,
 	                c.nombre,
 	                c.descripcion,
 	                c.precio,
 	                (SELECT url FROM categoria_imagenes ci
-	                WHERE ci.categoria_id = c.id
+	                WHERE ci.categoria_id = c.id_categoria
 	                ORDER BY ci.id ASC
 	                LIMIT 1) AS imagen
 	            FROM categoria c
@@ -69,7 +69,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	        """;
 
 	        return DB.queryMany(con, sql, rs -> new CategoriaResumenResponse(
-	            rs.getInt("id"),
+	            rs.getInt("id_categoria"),
 	            rs.getString("nombre"),
 	            rs.getString("descripcion"),
 	            rs.getInt("precio"),
@@ -80,8 +80,39 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	        throw new DataAccessException("Error obteniendo categorías con imagen", e);
 	    }
 	}
-	//}
-	//findAllForIndex
+	
+	public Categoria findOrThrow(int id) {
+	    try {
+	        String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
+	        return DB.queryOne(con, sql, mapper, id);
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al buscar categoría con id=" + id, e);
+	    }
+	}
+	
+	
+	@Override
+	public int update(Categoria c) {
+	    try {
+	        String sql = "UPDATE categoria SET nombre = ?, descripcion = ?, precio = ? WHERE id_categoria = ?";
+	        return DB.update(con, sql, c.getNombre(), c.getDescripcion(), c.getPrecio(), c.getId());
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al actualizar categoría con id=" + c.getId(), e);
+	    }
+	}
+	
+	
+
+	@Override
+	public boolean delete(int id) {
+	    try {
+	        String sql = "DELETE FROM categoria WHERE id_categoria = ?";
+	        DB.update(con, sql, id);
+	        return true;
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error al eliminar categoría con id=" + id, e);
+	    }
+	}
 	
 	
 }

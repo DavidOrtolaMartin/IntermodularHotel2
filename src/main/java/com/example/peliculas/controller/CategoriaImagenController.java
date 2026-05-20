@@ -1,4 +1,4 @@
-/*package com.example.peliculas.controller;
+package com.example.peliculas.controller;
 
 import java.io.IOException;
 import javax.sql.DataSource;
@@ -79,4 +79,4 @@ public class CategoriaImagenController extends BaseController {
 		}
 	}
 }
-*/
+

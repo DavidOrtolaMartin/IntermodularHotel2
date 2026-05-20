@@ -3,7 +3,7 @@ import { api } from "/js/core/api.js";
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-// 🔹 Cargar categoría
+//  Cargar categoría
 async function loadCategoria() {
     try {
         const c = await api.get(`/api/admin/categorias/${id}`);
@@ -12,12 +12,12 @@ async function loadCategoria() {
         document.getElementById("descripcion").value = c.descripcion;
         document.getElementById("precio").value = c.precio;
 
-        // 🔥 mostrar valores actuales en label
+        // mostrar valores actuales en label
         document.getElementById("label-nombre").textContent =
             `Nombre (actual: ${c.nombre})`;
 
         document.getElementById("label-descripcion").textContent =
-            `Descripción (actual: ${c.descripcion})`;
+            `Descripción (actual: ${c.descripcion})`; 
 
         document.getElementById("label-precio").textContent =
             `Precio (actual: ${c.precio}€)`;
