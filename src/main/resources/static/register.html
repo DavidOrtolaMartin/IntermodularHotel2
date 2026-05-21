@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
@@ -17,57 +18,106 @@
 
         <div class="mb-3">
             <label>Nombre</label>
-            <input id="name" class="form-control" required>
+
+            <input
+                id="name"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Apellido 1</label>
-            <input id="apellido1" class="form-control" required>
+
+            <input
+                id="apellido1"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Apellido 2</label>
-            <input id="apellido2" class="form-control">
+
+            <input
+                id="apellido2"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Email</label>
-            <input id="email" type="email" class="form-control" required>
+
+            <input
+                id="email"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Teléfono 1</label>
-            <input id="tlf1" class="form-control">
+
+            <input
+                id="tlf1"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Teléfono 2</label>
-            <input id="tlf2" class="form-control">
+
+            <input
+                id="tlf2"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Provincia</label>
-            <select id="provinciaId" class="form-select" required>
-                <option value="">Selecciona una provincia</option>
+
+            <select
+                id="provinciaId"
+                class="form-select"
+            >
+                <option value="">
+                    Selecciona una provincia
+                </option>
             </select>
         </div>
 
         <div class="mb-3">
             <label>Password</label>
-            <input id="password" type="password" class="form-control" required>
+
+            <input
+                id="password"
+                type="password"
+                class="form-control"
+            >
         </div>
 
         <div class="mb-3">
             <label>Confirmar password</label>
-            <input id="password2" type="password" class="form-control" required>
+
+            <input
+                id="password2"
+                type="password"
+                class="form-control"
+            >
         </div>
 
         <button class="btn btn-primary">
             Registrarse
         </button>
-		
-		<div id="error" class="text-danger mt-3" style="display:none"></div>
-		<div id="success" class="text-success mt-3" style="display:none"></div>
+
+        <div
+            id="error"
+            class="alert alert-danger mt-3"
+            style="display:none"
+        ></div>
+
+        <div
+            id="success"
+            class="alert alert-success mt-3"
+            style="display:none"
+        ></div>
 
     </form>
 

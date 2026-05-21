@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 import org.springframework.web.bind.annotation.*;
 
 
-import com.example.peliculas.dto.PeliculaResumen;
+
 import com.example.peliculas.exception.DataAccessException;
 
 

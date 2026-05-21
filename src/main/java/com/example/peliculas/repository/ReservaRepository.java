@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.example.peliculas.db.DB;
 import com.example.peliculas.dto.CategoriaDisponibleResponse;
+import com.example.peliculas.dto.ReservaResponse;
 import com.example.peliculas.entity.Reserva;
 import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.mapper.ReservaMapper;
@@ -180,6 +181,57 @@ public class ReservaRepository extends BaseRepository<Reserva>{
 
 	        throw new DataAccessException(
 	            "Error comprobando disponibilidad",
+	            e
+	        );
+	    }
+	}
+	
+	public List<ReservaResponse> findReservasConNumeroHabitacion(int userId) {
+
+	    String sql = """
+	        SELECT
+	            r.id_reserva,
+	            r.hab_id,
+	            h.num_hab,
+	            r.fecha_desde,
+	            r.fecha_hasta,
+	            r.pagado
+	        FROM reserva r
+	        JOIN habitacion h
+	            ON r.hab_id = h.id_habitacion
+	        WHERE r.user_id = ?
+	    """;
+
+	    try (
+	        PreparedStatement stmt = con.prepareStatement(sql)
+	    ) {
+
+	        stmt.setInt(1, userId);
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        List<ReservaResponse> reservas = new ArrayList<>();
+
+	        while (rs.next()) {
+
+	            reservas.add(new ReservaResponse(
+
+	                rs.getInt("id_reserva"),
+	                rs.getInt("hab_id"),
+	                rs.getInt("num_hab"),
+	                rs.getDate("fecha_desde").toLocalDate(),
+	                rs.getDate("fecha_hasta").toLocalDate(),
+	                rs.getBoolean("pagado")
+
+	            ));
+	        }
+
+	        return reservas;
+
+	    } catch (SQLException e) {
+
+	        throw new DataAccessException(
+	            "Error obteniendo reservas",
 	            e
 	        );
 	    }
