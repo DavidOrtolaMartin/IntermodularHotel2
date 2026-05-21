@@ -4,12 +4,12 @@ import { e }   from "/js/core/utils.js";
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         // 1. Listado de categorías (igual que el admin index)
-        const categorias = await api.get("/api/admin/categorias");
+        const categorias = await api.get("/api/categorias");
 
         // 2. Por cada categoría pedimos el detalle (igual que show.js)
         //    para obtener el array imagenes[]
         for (const c of categorias) {
-            const detalle = await api.get(`/api/admin/categorias/${c.id}`);
+            const detalle = await api.get(`/api/categorias/${c.id}`);
             c.imagenes = detalle.imagenes ?? [];
         }
 

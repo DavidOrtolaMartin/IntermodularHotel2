@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const nombre = document.getElementById("nombre").value;
-        const descripcion = document.getElementById("descripcion").value;
+        const nombre = document.getElementById("nombre").value.trim();
+        const descripcion = document.getElementById("descripcion").value.trim();
         const precio = document.getElementById("precio").value;
 
-        // 🔴 Validaciones
+        // Validaciones
         if (!nombre) {
             alert("Introduce un nombre");
             return;

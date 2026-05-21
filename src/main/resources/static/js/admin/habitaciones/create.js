@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		    alert("Introduce el número de habitación");
 		    return;
 		}
+		
+		if (!numHabitacion || parseInt(numHabitacion) <= 0) {
+		            alert("El número debe ser mayor que 0");
+		            return;
+		        }
 
 		if (!categoria) {
 		    alert("Selecciona una categoría");
@@ -33,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "/admin/habitaciones/index.html";
         } catch (err) {
             console.error("Error creando habitación:", err);
-            alert("Error creando habitación");
+            alert("Error creando habitación: el número de la habitación ya existe");
         }
     });
 });

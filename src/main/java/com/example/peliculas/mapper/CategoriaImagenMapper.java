@@ -10,7 +10,7 @@ public class CategoriaImagenMapper implements RowMapper<CategoriaImagen> {
 	public CategoriaImagen map(ResultSet rs) throws SQLException {
 		return new CategoriaImagen(
 			rs.getInt("id"),
-			rs.getInt("habitacionId"), 
+			rs.getInt("categoria_id"), 
 			rs.getString("url")
 		);
 	}

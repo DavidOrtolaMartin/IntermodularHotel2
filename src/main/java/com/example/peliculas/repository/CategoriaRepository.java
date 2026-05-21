@@ -65,7 +65,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	                ORDER BY ci.id ASC
 	                LIMIT 1) AS imagen
 	            FROM categoria c
-	            ORDER BY c.nombre
+	            ORDER BY c.precio
 	        """;
 
 	        return DB.queryMany(con, sql, rs -> new CategoriaResumenResponse(
@@ -83,7 +83,7 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	
 	public Categoria findOrThrow(int id) {
 	    try {
-	        String sql = "SELECT * FROM categoria WHERE id_categoria = ?";
+	        String sql = "SELECT * FROM categoria WHERE id_categoria = ? ";
 	        return DB.queryOne(con, sql, mapper, id);
 	    } catch (SQLException e) {
 	        throw new DataAccessException("Error al buscar categoría con id=" + id, e);
@@ -111,6 +111,17 @@ public class CategoriaRepository extends BaseRepository<Categoria>{
 	        return true;
 	    } catch (SQLException e) {
 	        throw new DataAccessException("Error al eliminar categoría con id=" + id, e);
+	    }
+	}
+	
+	
+	//comprueba antes de borrar la categoria si hay una hab asingnada
+	public boolean tieneHabitaciones(int categoriaId) {
+	    try {
+	        String sql = "SELECT COUNT(*) FROM habitacion WHERE categoria_id = ?";
+	        return DB.queryOne(con, sql, rs -> rs.getInt(1), categoriaId) > 0;
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Error comprobando habitaciones", e);
 	    }
 	}
 	

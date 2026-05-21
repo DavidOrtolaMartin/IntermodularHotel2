@@ -4,38 +4,373 @@
     <meta charset="UTF-8">
     <title>Administración de categorías</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── Categorías admin – estilos específicos de página ── */
+        .cat-page {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .cat-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cat-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #0b3b66;
+            margin: 0;
+        }
+
+        .cat-header .subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+        }
+
+        .cat-header-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        /* Botón volver */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            border: 1.5px solid #cbd5e1;
+            background: white;
+            color: #334155;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-back:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+        }
+
+        /* Botón nueva categoría */
+        .btn-nueva {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(37,99,235,0.25);
+            transition: transform 0.18s, box-shadow 0.18s;
+        }
+
+        .btn-nueva:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37,99,235,0.35);
+            color: white;
+        }
+
+        /* Grid de tarjetas */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* Tarjeta individual */
+        .cat-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #f1f5f9;
+        }
+
+        .cat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .cat-card-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cat-card-img-placeholder {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #e0eaff, #dbeafe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #93c5fd;
+            font-size: 2.5rem;
+        }
+
+        .cat-card-body {
+            padding: 1.1rem 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .cat-card-id {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #94a3b8;
+        }
+
+        .cat-card-nombre {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #0b3b66;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .cat-card-desc {
+            font-size: 0.82rem;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+            flex: 1;
+            /* Limitar a 2 líneas */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .cat-card-precio {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 0.4rem;
+        }
+
+        .cat-card-footer {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 0.5rem;
+            background: #f8fafc;
+        }
+
+        .cat-card-footer .btn-sm {
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.3rem 0.85rem;
+        }
+
+        /* Estado vacío */
+        .cat-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+        }
+
+        .cat-empty svg {
+            margin-bottom: 1rem;
+            opacity: 0.4;
+        }
+
+        /* Barra de búsqueda / contador */
+        .cat-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .cat-count {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .cat-count strong {
+            color: #1e293b;
+        }
+
+        .cat-search {
+            padding: 0.45rem 1rem;
+            border-radius: 999px;
+            border: 1.5px solid #e2e8f0;
+            font-size: 0.875rem;
+            width: 220px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .cat-search:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+    </style>
 </head>
-<body>
+<body class="cat-page">
 
-<div class="container">
-    <h1 class="mb-4">Administración de categorías</h1>
+<div class="container py-4">
 
-	<a
-	    href="/admin/index.html"
-	    class="btn btn-outline-primary mb-3"
-	>
-	    ← Volver al panel de administración
-	</a>
-	
-    <a href="create.html" class="btn btn-primary mb-3">
-        Nueva categoría
-    </a>
+    <!-- Cabecera -->
+    <div class="cat-header">
+        <div>
+            <h1>Categorías</h1>
+            <p class="subtitle">Gestión de tipos de habitación disponibles en el hotel</p>
+        </div>
+        <div class="cat-header-actions">
+            <a href="/admin/index.html" class="btn-back">
+                ← Panel admin
+            </a>
+            <a href="create.html" class="btn-nueva">
+                + Nueva categoría
+            </a>
+        </div>
+    </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tabla-categorias"></tbody>
-    </table>
+    <!-- Toolbar: contador + búsqueda -->
+    <div class="cat-toolbar">
+        <p class="cat-count" id="cat-count">Cargando…</p>
+        <input
+            type="search"
+            class="cat-search"
+            id="cat-search"
+            placeholder="Buscar categoría…"
+            autocomplete="off"
+        >
+    </div>
+
+    <!-- Grid de tarjetas -->
+    <div class="cat-grid" id="cat-grid"></div>
+
 </div>
 
-<script type="module" src="/js/admin/categorias/index.js"></script>
+<script type="module">
+    import { api } from "/js/core/api.js";
+    import { e } from "/js/core/utils.js";
+
+    let todasCategorias = [];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            todasCategorias = await api.get("/api/admin/categorias");
+            renderCategorias(todasCategorias);
+        } catch (err) {
+            console.error("Error cargando categorías:", err);
+        }
+
+        document.getElementById("cat-search").addEventListener("input", (ev) => {
+            const q = ev.target.value.toLowerCase().trim();
+            const filtradas = q
+                ? todasCategorias.filter(c =>
+                    c.nombre?.toLowerCase().includes(q) ||
+                    c.descripcion?.toLowerCase().includes(q)
+                )
+                : todasCategorias;
+            renderCategorias(filtradas);
+        });
+    });
+
+    function renderCategorias(categorias) {
+        const grid = document.getElementById("cat-grid");
+        const count = document.getElementById("cat-count");
+        grid.innerHTML = "";
+
+        if (!categorias || categorias.length === 0) {
+            count.innerHTML = "<strong>0</strong> categorías";
+            grid.innerHTML = `
+                <div class="cat-empty" style="grid-column:1/-1">
+                    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 9.75h16.5m-16.5 4.5h16.5M5.25 5.25h13.5a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 16.5v-9A2.25 2.25 0 0 1 5.25 5.25Z" />
+                    </svg>
+                    <p style="margin:0;font-size:0.95rem">No hay categorías disponibles</p>
+                </div>`;
+            return;
+        }
+
+        count.innerHTML = `<strong>${categorias.length}</strong> categoría${categorias.length !== 1 ? "s" : ""}`;
+
+        categorias.forEach(c => {
+            const card = document.createElement("div");
+            card.className = "cat-card";
+
+            const imgHtml = c.imagen
+                ? `<img src="${e(c.imagen)}" alt="${e(c.nombre)}" class="cat-card-img">`
+                : `<div class="cat-card-img-placeholder">
+                       <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                           <path stroke-linecap="round" stroke-linejoin="round"
+                               d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 18h16.5M3.75 6h16.5A2.25 2.25 0 0 1 22.5 8.25v7.5A2.25 2.25 0 0 1 20.25 18H3.75A2.25 2.25 0 0 1 1.5 15.75v-7.5A2.25 2.25 0 0 1 3.75 6Z" />
+                       </svg>
+                   </div>`;
+
+            card.innerHTML = `
+                ${imgHtml}
+                <div class="cat-card-body">
+                    <span class="cat-card-id">ID #${e(c.id)}</span>
+                    <h2 class="cat-card-nombre">${e(c.nombre)}</h2>
+                    <p class="cat-card-desc">${e(c.descripcion) || '<em style="color:#cbd5e1">Sin descripción</em>'}</p>
+                    <p class="cat-card-precio">${e(c.precio)} €<span style="font-size:0.75rem;font-weight:400;color:#94a3b8"> / noche</span></p>
+                </div>
+                <div class="cat-card-footer">
+                    <a href="/admin/categorias/show.html?id=${c.id}" class="btn btn-sm btn-outline-info">Ver</a>
+                    <a href="/admin/categorias/edit.html?id=${c.id}" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <button class="btn btn-sm btn-outline-danger" data-id="${c.id}">Borrar</button>
+                </div>
+            `;
+
+            card.querySelector("[data-id]").addEventListener("click", () => {
+                window.eliminarCategoria(c.id);
+            });
+
+            grid.appendChild(card);
+        });
+    }
+
+    window.eliminarCategoria = async (id) => {
+        if (!confirm("¿Seguro que quieres eliminar esta categoría?")) return;
+        try {
+            await api.delete(`/api/admin/categorias/${id}`);
+            location.reload();
+        } catch (err) {
+            if (err.status === 409) {
+                alert("No se puede eliminar: hay habitaciones asignadas a esta categoría");
+            } else {
+                alert("Error al eliminar");
+            }
+        }
+    };
+</script>
+
 </body>
 </html>

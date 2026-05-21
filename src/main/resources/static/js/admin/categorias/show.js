@@ -46,34 +46,51 @@ async function cargarCategoria(id) {
     document.getElementById("descripcion").textContent = c.descripcion;
     document.getElementById("precio").textContent      = c.precio;
 
-    const imagenes      = c.imagenes ?? [];
-    const imgPrincipal  = document.getElementById("imagen-principal");
-    const galeria       = document.getElementById("galeria");
+    const imagenes     = c.imagenes ?? [];
+    const placeholder  = document.getElementById("img-placeholder");
+    const infoCard     = document.getElementById("info-card");
+    const galeria      = document.getElementById("galeria");
+
+    // ── Imagen principal en la card ───────────────────────────────────
+    if (imagenes.length) {
+        // Sustituir el placeholder por una <img> real
+        const imgPrincipal = document.createElement("img");
+        imgPrincipal.src       = imagenes[0].url;
+        imgPrincipal.className = "info-card-img";
+        imgPrincipal.alt       = "Imagen principal";
+        imgPrincipal.style.cursor = "pointer";
+        imgPrincipal.onclick   = () => abrirModal(imagenes[0].url);
+        placeholder.replaceWith(imgPrincipal);
+    }
 
     if (!imagenes.length) {
-        imgPrincipal.style.display = "none";
         galeria.innerHTML = "";
         return;
     }
 
-    // imagen principal
-    imgPrincipal.src           = imagenes[0].url;
-    imgPrincipal.style.display = "block";
-    imgPrincipal.style.cursor  = "pointer";
-    imgPrincipal.onclick       = () => abrirModal(imagenes[0].url);
-
-    // galería
+    // ── Galería (resto de imágenes) ───────────────────────────────────
     galeria.innerHTML = "";
-    imagenes.slice(1).forEach(img => {
-        const el        = document.createElement("img");
-        el.src          = img.url;
-        el.style.width  = "120px";
-        el.style.cursor = "pointer";
-        el.onclick      = () => abrirModal(img.url);
-        galeria.appendChild(el);
+    imagenes.forEach((img, i) => {
+        const item = document.createElement("div");
+        item.className = "galeria-item";
+
+        const el = document.createElement("img");
+        el.src    = img.url;
+        el.alt    = `Imagen ${i + 1}`;
+        el.onclick = () => abrirModal(img.url);
+        item.appendChild(el);
+
+        if (i === 0) {
+            const badge = document.createElement("span");
+            badge.className   = "badge-principal";
+            badge.textContent = "Principal";
+            item.appendChild(badge);
+        }
+
+        galeria.appendChild(item);
     });
 
-    // modal eventos (solo los registramos una vez)
+    // ── Modal eventos (una sola vez) ──────────────────────────────────
     document.getElementById("cerrar-modal").onclick = cerrarModal;
     document.getElementById("modal").onclick = (e) => {
         if (e.target.id === "modal") cerrarModal();

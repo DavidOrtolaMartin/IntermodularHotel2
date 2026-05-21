@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.peliculas.dto.CategoriaDetalleResponse;
 import com.example.peliculas.dto.CategoriaResumenResponse;
@@ -103,7 +105,10 @@ public class CategoriaAdminController {
         	CategoriaImagenRepository imgRepo = new CategoriaImagenRepository(con);
         	
         	var imagenes = imgRepo.findByCategoriaId(id);
-        	
+        	if (repo.tieneHabitaciones(id)) {//esto es para ver si hay hab asignadas a la categoria antes de borrarla
+        	    throw new ResponseStatusException(HttpStatus.CONFLICT, 
+        	        "No se puede eliminar: hay habitaciones asignadas a esta categoría");
+        	}
         	if(repo.delete(id) == false) {
         		throw new NotFoundException("No se ha encontrado el id a eliminar");
         	}
