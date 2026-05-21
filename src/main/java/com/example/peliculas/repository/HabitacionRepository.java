@@ -65,7 +65,7 @@ public class HabitacionRepository extends BaseRepository<Habitacion>{
 	                c.precio AS precio
 	            FROM habitacion h
 	            JOIN categoria c ON h.categoria_id = c.id_categoria
-	            ORDER BY c.nombre
+	            ORDER BY c.precio, c.nombre
 	        """;
 
 	        return DB.queryMany(con, sql, rs -> new HabitacionDTO(
