@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.peliculas.dto.CategoriaDisponibleResponse;
 import com.example.peliculas.dto.ReservaRequest;
+import com.example.peliculas.dto.ReservaResponse;
 import com.example.peliculas.entity.Reserva;
 import com.example.peliculas.exception.DataAccessException;
 import com.example.peliculas.repository.ReservaRepository;
@@ -39,7 +40,7 @@ public class ReservaController {
     }
     
     @GetMapping("/mis-reservas")
-    public List<Reserva> misReservas(HttpSession session) {
+    public List<ReservaResponse> misReservas(HttpSession session) {
 
         Integer userId = (Integer) session.getAttribute("userId");
 
@@ -50,7 +51,7 @@ public class ReservaController {
         try (Connection con = ds.getConnection()) {
 
             ReservaRepository repo = new ReservaRepository(con);
-            return repo.findByUserId(userId);
+            return repo.findReservasConNumeroHabitacion(userId);
 
         } catch (SQLException e) {
             throw new DataAccessException(e);

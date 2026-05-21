@@ -29,7 +29,7 @@ async function cargarReservas() {
 
             <div class="card mb-3 p-3">
 
-                <h5>Habitación ${r.hab_id}</h5>
+                <h5>Habitación ${r.num_hab}</h5>
 
                 <p>
                     <strong>Desde:</strong>
