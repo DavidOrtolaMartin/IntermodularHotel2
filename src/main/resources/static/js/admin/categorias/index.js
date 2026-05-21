@@ -58,8 +58,11 @@ window.eliminarCategoria = async (id) => {
     try {
         await api.delete(`/api/admin/categorias/${id}`);
         location.reload();
-    } catch (err) {
-        console.error("Error eliminando categoría:", err);
-        alert("Error al eliminar");
+    } 		catch (err) {
+		        if (err.status === 409) {
+		            alert("No se puede eliminar: hay habitaciones asignadas a esta categoría");
+		        } else {
+		            alert("Error al eliminar");
+		        }
     }
 };

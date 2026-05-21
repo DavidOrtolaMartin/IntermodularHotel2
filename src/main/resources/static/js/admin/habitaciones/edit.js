@@ -38,7 +38,7 @@ document.getElementById("form-habitacion").addEventListener("submit", async (e) 
         window.location.href = "/admin/habitaciones/index.html";
     } catch (err) {
         console.error(err);
-        alert("Error actualizando");
+        alert("Error actualizando: el número de la habitación ya existe");
     }
 });
 

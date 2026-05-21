@@ -13,7 +13,7 @@ public class ImageValidator {
 
 	private static final Tika tika = new Tika();
 
-	private static final Set<String> ALLOWED_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
+	private static final Set<String> ALLOWED_TYPES = Set.of("image/jpeg","image/jpg", "image/png", "image/webp", "image/gif");
 
 	private static final long MAX_SIZE = 20_000_000; // 20MB o 20000kb
 

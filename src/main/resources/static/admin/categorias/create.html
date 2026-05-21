@@ -4,35 +4,176 @@
     <meta charset="UTF-8">
     <title>Nueva categoría</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        .cat-page { font-family: 'DM Sans', sans-serif; }
+
+        .cat-header {
+            display: flex; align-items: flex-end;
+            justify-content: space-between; flex-wrap: wrap;
+            gap: 1rem; margin-bottom: 2rem;
+            padding-bottom: 1.25rem; border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cat-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; color: #0b3b66; margin: 0;
+        }
+
+        .cat-header .subtitle { font-size: 0.875rem; color: #64748b; margin-top: 0.2rem; }
+
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 1.1rem; border-radius: 999px;
+            border: 1.5px solid #cbd5e1; background: white;
+            color: #334155; font-size: 0.875rem; font-weight: 500;
+            text-decoration: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .btn-back:hover { border-color: #2563eb; color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+
+        /* Wrapper centrado para el formulario */
+        .create-wrapper {
+            max-width: 580px;
+        }
+
+        /* Tarjeta del formulario */
+        .form-card {
+            background: white; border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            border: 1px solid #f1f5f9;
+            padding: 2.25rem 2.5rem;
+        }
+
+        .form-label-custom {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.07em;
+            text-transform: uppercase; color: #94a3b8; margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .form-control {
+            border-radius: 10px !important;
+            border: 1.5px solid #e2e8f0 !important;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.65rem 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1) !important;
+            background: white;
+        }
+
+        textarea.form-control { resize: vertical; }
+
+        /* Línea separadora entre inputs */
+        .form-row-sep {
+            height: 1px; background: #f1f5f9; margin: 0.25rem 0 1.5rem;
+        }
+
+        /* Precio con símbolo € integrado */
+        .precio-wrapper {
+            position: relative;
+        }
+        .precio-wrapper .euro-symbol {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            font-weight: 600; color: #94a3b8; font-size: 0.95rem; pointer-events: none;
+        }
+        .precio-wrapper input { padding-right: 2.2rem; }
+
+        /* Acciones */
+        .form-actions {
+            display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem;
+            padding-top: 1.5rem; border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-crear {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.65rem 1.8rem; border-radius: 999px; border: none;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+            transition: transform 0.18s, box-shadow 0.18s;
+        }
+        .btn-crear:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.4); }
+        .btn-crear:active { transform: translateY(0); }
+
+        .btn-cancelar {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.65rem 1.3rem; border-radius: 999px;
+            border: 1.5px solid #fca5a5; background: white;
+            color: #ef4444; font-size: 0.9rem; font-weight: 500;
+            text-decoration: none; transition: background 0.2s, border-color 0.2s;
+        }
+        .btn-cancelar:hover { background: #fef2f2; border-color: #ef4444; color: #ef4444; }
+
+        /* Tip informativo */
+        .form-tip {
+            font-size: 0.78rem; color: #94a3b8;
+            margin-top: 0.4rem; display: flex; align-items: center; gap: 0.3rem;
+        }
+    </style>
 </head>
-<body>
+<body class="cat-page">
 
-<div class="container">
-    <h1>Nueva categoría</h1>
+<div class="container py-4">
 
-    <form id="form-categoria">
-
-        <div class="mb-3">
-            <label>Nombre</label>
-            <input type="text" id="nombre" class="form-control" required>
+    <!-- Cabecera -->
+    <div class="cat-header">
+        <div>
+            <h1>Nueva categoría</h1>
+            <p class="subtitle">Añade un nuevo tipo de habitación al hotel</p>
         </div>
+        <a href="/admin/categorias/index.html" class="btn-back">← Volver</a>
+    </div>
 
-        <div class="mb-3">
-            <label>Descripción</label>
-            <input type="text" id="descripcion" class="form-control">
+    <!-- Formulario centrado -->
+    <div class="create-wrapper">
+        <div class="form-card">
+            <form id="form-categoria">
+
+                <div class="mb-4">
+                    <label class="form-label-custom" for="nombre">Nombre de la categoría</label>
+                    <input
+                        type="text" id="nombre" class="form-control"
+                        placeholder="Ej. Suite Junior, Estándar..."
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label-custom" for="descripcion">Descripción</label>
+                    <textarea
+                        id="descripcion" class="form-control" rows="4"
+                        placeholder="Describe las características de esta categoría…"
+                    ></textarea>
+                    
+                </div>
+
+                <div class="mb-2" style="max-width: 200px;">
+                    <label class="form-label-custom" for="precio">Precio por noche</label>
+                    <div class="precio-wrapper">
+                        <input
+                            type="number" id="precio" class="form-control"
+                            step="1" min="1" required placeholder="0"
+                        >
+                        <span class="euro-symbol">€</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-crear">+ Crear categoría</button>
+                    <a href="/admin/categorias/index.html" class="btn-cancelar">✕ Cancelar</a>
+                </div>
+
+            </form>
         </div>
+    </div>
 
-        <div class="mb-3">
-            <label>Precio (€)</label>
-            <input type="number" id="precio" class="form-control" min="1" step="1" required>
-        </div>
-
-        <button class="btn btn-primary">Crear</button>
-
-        <a href="/admin/categorias/index.html" class="btn btn-outline-danger mt-2">
-            Cancelar
-        </a>
-    </form>
 </div>
 
 <script type="module" src="/js/admin/categorias/create.js"></script>
